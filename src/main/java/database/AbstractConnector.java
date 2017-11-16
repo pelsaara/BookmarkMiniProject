@@ -9,12 +9,9 @@ import java.sql.SQLException;
 public interface AbstractConnector {
 
     /**
-     * Uses {@link DriverManager} to determine the correct driver and then
-     * returns {@link Connection} to database in location {@link #address}.
-     *
-     * @return {@link Connection} to database in location {@link #address}
+     * @return {@link Connection} to database
      * @throws java.sql.SQLException
      */
     Connection getConnection() throws SQLException;
-    
+
 }
