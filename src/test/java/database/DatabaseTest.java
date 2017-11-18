@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.junit.After;
@@ -35,6 +36,9 @@ public class DatabaseTest {
 
     @Mock
     private Statement statement;
+    
+    @Mock
+    private ResultSetMetaData metadata;
 
 
     private Database database;
@@ -48,6 +52,11 @@ public class DatabaseTest {
     public void setUp() throws Exception {
         System.setOut(new PrintStream(outContent));
 
+        when(metadata.getColumnCount()).thenReturn(1);
+        when(metadata.getColumnName(any(Integer.class))).thenReturn("Title");
+        when(rs.getMetaData()).thenReturn(metadata);
+        when(rs.getString(any(String.class))).thenReturn("BookTitle");
+        when(rs.next()).thenReturn(true, false);
         when(stmt.executeQuery()).thenReturn(rs);
         when(stmt.executeUpdate()).thenReturn(2);
         when(connection.prepareStatement(any(String.class))).thenReturn(stmt);
@@ -84,6 +93,7 @@ public class DatabaseTest {
 
     @Test
     public void testDebugModeSetToFalse() throws SQLException {
+        when(rs.next()).thenReturn(Boolean.FALSE);
         database.setDebugMode(false);
         database.query(CREATE_STMT);
         database.update(CREATE_STMT);

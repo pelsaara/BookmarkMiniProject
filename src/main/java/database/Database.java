@@ -3,10 +3,13 @@ package database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class for taking care of database connections and executing queries using
@@ -84,18 +87,20 @@ public class Database implements AbstractDatabase {
 
     /**
      * Prepares and executes a statement with given query and arguments, and
-     * returns the resulting {@link ResultSet}. If {@link #debug} is set to
+     * returns the results as a {@link Map} object. If {@link #debug} is set to
      * {@code true}, also prints out the query being executed.
      *
      * @param query The query to be executed as a string
      * @param params Arguments that are inserted into the query
-     * @return Results of the query as a {@link ResultSet}
+     * @return Results of the query as a map of String to List of String, where
+     * each column in the result of the query maps to a list of values in each
+     * row.
      * @throws java.sql.SQLException
      */
     @Override
-    public ResultSet query(String query, Object... params)
-            throws SQLException {
+    public Map<String, List<String>> query(String query, Object... params) throws SQLException {
 
+        Map<String, List<String>> results = new HashMap<>();
         try (Connection connection = connector.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs;
@@ -112,7 +117,18 @@ public class Database implements AbstractDatabase {
 
             rs = stmt.executeQuery();
 
-            return rs;
+            ResultSetMetaData metadata = rs.getMetaData();
+            for (int i = 1; i <= metadata.getColumnCount(); i++) {
+                results.put(metadata.getColumnName(i), new ArrayList<>());
+            }
+
+            while (rs.next()) {
+                for (String column : results.keySet()) {
+                    results.get(column).add(rs.getString(column));
+                }
+            }
+
+            return results;
         }
     }
 
