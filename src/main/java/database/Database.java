@@ -3,10 +3,13 @@ package database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class for taking care of database connections and executing queries using
@@ -93,9 +96,9 @@ public class Database implements AbstractDatabase {
      * @throws java.sql.SQLException
      */
     @Override
-    public ResultSet query(String query, Object... params)
-            throws SQLException {
+    public Map<String, List<String>> query(String query, Object... params) throws SQLException {
 
+        Map<String, List<String>> results = new HashMap<>();
         try (Connection connection = connector.getConnection();
                 PreparedStatement stmt = connection.prepareStatement(query)) {
             ResultSet rs;
@@ -112,7 +115,18 @@ public class Database implements AbstractDatabase {
 
             rs = stmt.executeQuery();
 
-            return rs;
+            ResultSetMetaData metadata = rs.getMetaData();
+            for (int i = 1; i <= metadata.getColumnCount(); i++) {
+                results.put(metadata.getColumnName(i), new ArrayList<>());
+            }
+
+            while (rs.next()) {
+                for (String column : results.keySet()) {
+                    results.get(column).add(rs.getString(column));
+                }
+            }
+
+            return results;
         }
     }
 
@@ -128,7 +142,7 @@ public class Database implements AbstractDatabase {
         list.add("CREATE TABLE Book "
                 + "(title TEXT NOT NULL,"
                 + " author TEXT NOT NULL,"
-                + " ISBN TEXT");
+                + " ISBN TEXT)");
 
         return list;
     }
