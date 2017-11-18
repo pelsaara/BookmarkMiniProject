@@ -15,6 +15,7 @@ plugins {
 }
 
 mainClassName = 'ui.CLI'
+ext.mainClass = 'ui.CLI' // debuggausta varten
 
 repositories {
     jcenter()

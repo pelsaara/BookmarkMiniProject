@@ -125,10 +125,10 @@ public class Database implements AbstractDatabase {
         ArrayList<String> list = new ArrayList<>();
 
         // SQL statements for creating tables
-        list.add("CREATE TABLE Book "
+        list.add("CREATE TABLE Book"
                 + "(title TEXT NOT NULL,"
                 + " author TEXT NOT NULL,"
-                + " ISBN TEXT");
+                + " ISBN TEXT)");
 
         return list;
     }
