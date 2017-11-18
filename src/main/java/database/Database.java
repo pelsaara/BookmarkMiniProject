@@ -87,12 +87,14 @@ public class Database implements AbstractDatabase {
 
     /**
      * Prepares and executes a statement with given query and arguments, and
-     * returns the resulting {@link ResultSet}. If {@link #debug} is set to
+     * returns the results as a {@link Map} object. If {@link #debug} is set to
      * {@code true}, also prints out the query being executed.
      *
      * @param query The query to be executed as a string
      * @param params Arguments that are inserted into the query
-     * @return Results of the query as a {@link ResultSet}
+     * @return Results of the query as a map of String to List of String, where
+     * each column in the result of the query maps to a list of values in each
+     * row.
      * @throws java.sql.SQLException
      */
     @Override
