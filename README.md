@@ -12,7 +12,7 @@ Kullekin taskille:
 * Toteutusaika estimoitu
 * Toteutus suunniteltu
 * Ohjelmoitu
-* Yksikkötestauskattavuus vähintään 80 %
+* Toteutus yksikkötestattu kohtuullisella tasolla
 * Julkisille metodeille Javadocit
 * Koodi githubissa
 * Traviksen buildi läpi
