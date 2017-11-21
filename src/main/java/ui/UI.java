@@ -39,11 +39,15 @@ public class UI implements Runnable {
                     String author;
                     String title;
                     String ISBN;
+                    System.out.println("Title:");
                     title = br.readLine();
+                    System.out.println("Author:");
                     author = br.readLine();
+                    System.out.println("ISBN:");
                     ISBN = br.readLine();
                     try {
                         bookDAO.create(new Book(title, author, ISBN));
+                        System.out.println("Book added!");
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
