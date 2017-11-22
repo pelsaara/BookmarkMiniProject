@@ -26,4 +26,5 @@ Yleisesti:
 2. Aja sovellus komennolla "gradle run"
 
 Kirjan lisäys: Anna komento "add book", ja sen jälkeen ohjelman kysymät otsikko, kirjailija ja ISBN-numero.
+
 Kirjojen selaus: Anna komento "browse".
