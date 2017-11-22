@@ -20,4 +20,10 @@ Kullekin taskille:
 Yleisesti:
 * Toteutus noudattaa yhdessä suunniteltua arkkitehtuuria
 
-## TODO: Asennusohjeet
+## Asennusohjeet (viikolle 1)
+
+1. Kloonaa repositorio: git@github.com:llmlks/BookmarkMiniProject.git
+2. Aja sovellus komennolla "gradle run"
+
+Kirjan lisäys: Anna komento "add book", ja sen jälkeen ohjelman kysymät otsikko, kirjailija ja ISBN-numero.
+Kirjojen selaus: Anna komento "browse".
