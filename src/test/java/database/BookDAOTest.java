@@ -1,34 +1,42 @@
 package database;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.PrintStream;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import ui.UI;
 import tables.Book;
 
+@RunWith(MockitoJUnitRunner.class)
 public class BookDAOTest {
 
 	private BookDAO bookDAO;
 	private Database database;
+	private Map<String, List<String>> results;
+	private Book newBook;
 
 	@Before
 	public void setUp() throws Exception {
-        database = new Database(new Connector("jdbc:sqlite:unitTest.db"));
-        database.init();
-
-        bookDAO = new BookDAO(database);
-		Book newBook = new Book("Title", "Author", "ISBN");
-		bookDAO.create(newBook);
+		database = mock(Database.class);	
+		bookDAO = new BookDAO(database);
+		results = new HashMap<String, List<String>>();
+		
+		newBook = new Book("Title", "Author", "ISBN");
+		results.put("title", Arrays.asList("Title"));
+		results.put("author", Arrays.asList("Author"));
+		results.put("ISBN", Arrays.asList("ISBN"));
 	}
 
 	@After
@@ -38,15 +46,10 @@ public class BookDAOTest {
 	
 	@Test
 	public void testCreate() throws SQLException {
-		Map<String, List<String>> results = database.query("SELECT * FROM Book WHERE title = \"Title\" AND author = \"Author\" AND ISBN = \"ISBN\"");
+		bookDAO.create(newBook);
 		
-		// The results include each table column as its separate String key and the column's values as the List<String>
-		// One row in the table => 3 key-value pairs in total
-		assertEquals(results.size(), 3);
-		
-		assertEquals(results.get("title").get(0), "Title");
-		assertEquals(results.get("author").get(0), "Author");
-		assertEquals(results.get("ISBN").get(0), "ISBN");
+		verify(database).update(eq("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)"), 
+				eq("Title"), eq("Author"), eq("ISBN"));
 	}
 
 //	@Test
@@ -55,13 +58,20 @@ public class BookDAOTest {
 //	}
 
 	@Test
-	public void testFindAll() throws SQLException {
+	public void testFindAll() throws SQLException {		
 		Book newerBook = new Book("Title2", "Author2", "ISBN2");
+		results.put("title", Arrays.asList("Title2"));
+		results.put("author", Arrays.asList("Author2"));
+		results.put("ISBN", Arrays.asList("ISBN2"));
+		
+		bookDAO.create(newBook);
 		bookDAO.create(newerBook);
 		
-		List<Book> books = bookDAO.findAll();
+		when(database.query("SELECT * FROM Book")).thenReturn(results);
 		
-		assertEquals(books.size(), 2);
+		bookDAO.findAll();
+		
+		verify(database).query(eq("SELECT * FROM Book"));
 	}
 
 //	@Test
