@@ -15,9 +15,9 @@ public class Stepdefs {
 
     List<String> inputLines = new ArrayList<>();
 
-    @Given("^command add book is selected$")
-    public void command_add_book_selected() throws Throwable {
-        inputLines.add("add book");
+    @Given("^command \"([^\"]*)\" is selected$")
+    public void command_add_book_selected(String command) throws Throwable {
+        inputLines.add(command);
     }
     
     @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
