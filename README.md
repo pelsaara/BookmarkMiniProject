@@ -14,13 +14,14 @@ Kullekin taskille:
 * Ohjelmoitu
 * Toteutus yksikkötestattu kohtuullisella tasolla
 * Julkisille metodeille Javadocit
-* Koodi githubissa
+* Koodi githubissa kun se toimii lokaalisti
 * Traviksen buildi läpi
+* Tunnit päivitetty sprintin backlogille
 
 Yleisesti:
 * Toteutus noudattaa yhdessä suunniteltua arkkitehtuuria
 
-## Asennusohjeet (viikolle 1)
+## Asennusohjeet
 
 1. Kloonaa repositorio: git@github.com:llmlks/BookmarkMiniProject.git
 2. Aja sovellus komennolla "gradle run"
