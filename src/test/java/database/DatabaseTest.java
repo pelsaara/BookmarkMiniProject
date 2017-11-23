@@ -42,7 +42,8 @@ public class DatabaseTest {
 
 
     private Database database;
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private ByteArrayOutputStream outContent;
+    private PrintStream standardOut;
     private static final String CREATE_STMT = "CREATE TABLE Book";
 
     public DatabaseTest() {
@@ -50,6 +51,8 @@ public class DatabaseTest {
 
     @Before
     public void setUp() throws Exception {
+        standardOut = System.out;
+        outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
         when(metadata.getColumnCount()).thenReturn(1);
@@ -67,7 +70,7 @@ public class DatabaseTest {
 
     @After
     public void cleanUpStreams() {
-        System.setOut(null);
+        System.setOut(standardOut);
     }
 
     @Test
