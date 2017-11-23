@@ -1,5 +1,5 @@
 
-package ui;
+package cukestests;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
