@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import static org.junit.Assert.*;
 import java.util.List;
 import tables.Book;
@@ -37,6 +38,7 @@ public class Stepdefs {
 
     @Before
     public void setUp() {
+        input = "";
         standardIn = System.in;
         standardOut = System.out;
         database = new Database(new Connector("jdbc:sqlite:cukesTest.db"));
@@ -61,12 +63,11 @@ public class Stepdefs {
         addInputLine(title);
         addInputLine(author);
         addInputLine(ISBN);
-
-        newBook = new Book(title, author, ISBN);
     }
 
-    @Then("^system will respond with \"([^\"]*)\"$")
-    public void system_will_respond_with(String expectedOutput) throws Throwable {
+    @Then("^new book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
+    public void new_book_is_added(String title, String author, String ISBN) throws SQLException {
+        Book addedBook = new Book(title, author, ISBN);
 
         addInputLine("quit");
         setIOStreams();
@@ -78,7 +79,31 @@ public class Stepdefs {
         List<Book> allBooks = bookDao.findAll();
 
         assertEquals(allBooks.size(), 1);
-        assertEquals(allBooks.get(0), newBook);
+        assertEquals(allBooks.get(0), addedBook);
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Book added!"));
+    }
+
+    @Then("^only one book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
+    public void only_one_book_is_added(String title, String author, String ISBN) throws Throwable {
+        Book addedBook = new Book(title, author, ISBN);
+
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Book> allBooks = bookDao.findAll();
+
+        assertEquals(allBooks.size(), 1);
+        assertEquals(allBooks.get(0), addedBook);
+        String output = outputStream.toString();
+        
+        assertTrue(output.contains("Book added!"));
+        assertTrue(output.contains("Book has already been added in the library"));
     }
 
     private void setIOStreams() {

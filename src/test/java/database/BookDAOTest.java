@@ -46,10 +46,13 @@ public class BookDAOTest {
 	
 	@Test
 	public void testCreate() throws SQLException {
-		bookDAO.create(newBook);
+		Book newerBook = new Book("Title2", "Author2", "ISBN2");
+
+                when(database.query("SELECT * FROM Book")).thenReturn(results);
+		bookDAO.create(newerBook);
 		
 		verify(database).update(eq("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)"), 
-				eq("Title"), eq("Author"), eq("ISBN"));
+				eq("Title2"), eq("Author2"), eq("ISBN2"));
 	}
 
 //	@Test
@@ -58,15 +61,7 @@ public class BookDAOTest {
 //	}
 
 	@Test
-	public void testFindAll() throws SQLException {		
-		Book newerBook = new Book("Title2", "Author2", "ISBN2");
-		results.put("title", Arrays.asList("Title2"));
-		results.put("author", Arrays.asList("Author2"));
-		results.put("ISBN", Arrays.asList("ISBN2"));
-		
-		bookDAO.create(newBook);
-		bookDAO.create(newerBook);
-		
+	public void testFindAll() throws SQLException {	
 		when(database.query("SELECT * FROM Book")).thenReturn(results);
 		
 		bookDAO.findAll();

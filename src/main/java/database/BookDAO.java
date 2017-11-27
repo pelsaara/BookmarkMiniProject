@@ -26,6 +26,15 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
      */
     @Override
     public Book create(Book book) throws SQLException {
+
+        List<Book> allBooks = this.findAll();
+        for (Book existingBook : allBooks) {
+            if (book.getAuthor().equals(existingBook.getAuthor())
+                    && book.getTitle().equals(existingBook.getTitle())) {
+                return null;
+            }
+        }
+
         database.update("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)", book.getTitle(), book.getAuthor(), book.getISBN());
         
         return book;

@@ -52,8 +52,11 @@ public class UI implements Runnable {
                     System.out.println("ISBN:");
                     ISBN = br.readLine();
                     try {
-                        bookDAO.create(new Book(title, author, ISBN));
-                        System.out.println("\nBook added!");
+                        if (bookDAO.create(new Book(title, author, ISBN)) == null) {
+                            System.out.println("\nBook has already been added in the library");
+                        } else {
+                            System.out.println("\nBook added!");
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
