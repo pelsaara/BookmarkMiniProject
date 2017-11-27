@@ -33,7 +33,7 @@ public class UI implements Runnable {
     public void run() {
         
         while (true) {
-            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
+            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo delete a book type \"delete book\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
             
             String command;
             try {
@@ -79,6 +79,7 @@ public class UI implements Runnable {
                     String author = br.readLine();
                     try {
                         bookDAO.delete(new Book(title, author));
+                        System.out.println("\nKirja poistettu!");
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
