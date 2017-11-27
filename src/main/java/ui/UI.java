@@ -38,7 +38,7 @@ public class UI implements Runnable {
     public void run() {
 
         while (true) {
-            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo delete a book type \"delete book\".\nTo add a book type \"add podcast\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
+            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo delete a book type \"delete book\".\nTo add a book type \"add podcast\".\nTo delete a podcast type \"delete podcast\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
 
             String command;
             try {
@@ -116,6 +116,17 @@ public class UI implements Runnable {
                         System.out.println("\nPodcast added!");
                     } catch (SQLException exe) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+                    }
+                } else if (command.equals("delete podcast")) {
+                    System.out.println("Title:");
+                    String title = br.readLine();
+                    System.out.println("Author:");
+                    String author = br.readLine();
+                    try {
+                        podcastDAO.delete(new Podcast(author, title));
+                        System.out.println("\nPodcast poistettu!");
+                    } catch (SQLException ex) {
+                        Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } catch (IOException ex) {
