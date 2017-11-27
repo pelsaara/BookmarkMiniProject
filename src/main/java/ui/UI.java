@@ -25,10 +25,9 @@ public class UI implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("");
         
         while (true) {
-            System.out.println("What to do?\n");
+            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
             
             String command;
             try {
@@ -39,6 +38,7 @@ public class UI implements Runnable {
                     String author;
                     String title;
                     String ISBN;
+                    System.out.println("");
                     System.out.println("Title:");
                     title = br.readLine();
                     System.out.println("Author:");
@@ -47,11 +47,12 @@ public class UI implements Runnable {
                     ISBN = br.readLine();
                     try {
                         bookDAO.create(new Book(title, author, ISBN));
-                        System.out.println("Book added!");
+                        System.out.println("\nBook added!");
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else if (command.equals("browse")) {
+                    System.out.println("");
                     try {
                         List<Book> books = bookDAO.findAll();
                         for (Book book : books) {
