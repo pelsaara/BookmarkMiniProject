@@ -66,7 +66,7 @@ public class Stepdefs {
     }
 
     @Then("^new book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
-    public void new_book_is_added(String title, String author, String ISBN) throws SQLException {
+    public void new_book_is_added(String title, String author, String ISBN) throws Throwable {
         Book addedBook = new Book(title, author, ISBN);
 
         addInputLine("quit");
@@ -104,6 +104,23 @@ public class Stepdefs {
         
         assertTrue(output.contains("Book added!"));
         assertTrue(output.contains("Book has already been added in the library"));
+    }
+
+    @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is not added$")
+    public void book_without_title_or_author_is_not_added(String title, String author, String ISBN) throws Throwable {
+        Book notAddedBook = new Book(title, author, ISBN);
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Book> allBooks = bookDao.findAll();
+        assertFalse(allBooks.contains(notAddedBook));
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Either title or author is not valid (cannot be empty)"));
     }
 
     private void setIOStreams() {

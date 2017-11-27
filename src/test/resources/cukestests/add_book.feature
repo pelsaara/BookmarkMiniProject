@@ -1,9 +1,19 @@
 Feature: User can add new book to the database with adequate parameters
 
-    Scenario: user can add new book with correct parameters
+    Scenario: user can add new book with valid title, author and ISBN
        Given command "add book" is selected
        When  title "Uusi64646" and author "kirjailija864831" and ISBN "123-456-78912-3-4" are entered
        Then  new book is added with title "Uusi64646" and author "kirjailija864831" and ISBN "123-456-78912-3-4"
+
+    Scenario: user cannot add new book without title
+       Given command "add book" is selected
+       When  title "" and author "kirjailija8646435" and ISBN "64948-646213" are entered
+       Then  book with title "" and author "kirjailija8646435" and ISBN "64948-646213" is not added
+
+    Scenario: user cannot add new book without author
+       Given command "add book" is selected
+       When  title "kirja156483" and author "" and ISBN "64948-646213" are entered
+       Then  book with title "kirja156483" and author "" and ISBN "64948-646213" is not added
 
     Scenario: user can add new book without ISBN
        Given command "add book" is selected

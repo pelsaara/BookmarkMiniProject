@@ -52,7 +52,9 @@ public class UI implements Runnable {
                     System.out.println("ISBN:");
                     ISBN = br.readLine();
                     try {
-                        if (bookDAO.create(new Book(title, author, ISBN)) == null) {
+                        if (title.isEmpty() || author.isEmpty()) {
+                            System.out.println("\nEither title or author is not valid (cannot be empty)");
+                        } else if(bookDAO.create(new Book(title, author, ISBN)) == null) {
                             System.out.println("\nBook has already been added in the library");
                         } else {
                             System.out.println("\nBook added!");
