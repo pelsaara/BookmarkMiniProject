@@ -1,4 +1,4 @@
-package tables;
+package bookmarkmodels;
 
 /**
  * Class for representing bookmarks of type 'Book'.

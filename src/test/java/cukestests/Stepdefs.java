@@ -5,9 +5,9 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import database.BookDAO;
-import database.Connector;
-import database.Database;
+import bookmarkdb.BookDAO;
+import bookmarkdb.Connector;
+import bookmarkdb.Database;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,7 @@ import java.nio.file.Files;
 import java.sql.SQLException;
 import static org.junit.Assert.*;
 import java.util.List;
-import tables.Book;
+import bookmarkmodels.Book;
 import ui.UI;
 
 public class Stepdefs {

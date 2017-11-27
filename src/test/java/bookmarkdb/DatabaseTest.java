@@ -1,5 +1,6 @@
-package database;
+package bookmarkdb;
 
+import bookmarkdb.Database;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.sql.Connection;

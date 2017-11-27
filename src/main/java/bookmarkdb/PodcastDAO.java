@@ -1,11 +1,11 @@
 
-package database;
+package bookmarkdb;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import tables.Podcast;
+import bookmarkmodels.Podcast;
 
 /**
  *  Class for accessing database table for bookmarks of type 'Podcast'.

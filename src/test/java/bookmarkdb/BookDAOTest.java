@@ -1,5 +1,7 @@
-package database;
+package bookmarkdb;
 
+import bookmarkdb.BookDAO;
+import bookmarkdb.Database;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,7 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import tables.Book;
+import bookmarkmodels.Book;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookDAOTest {

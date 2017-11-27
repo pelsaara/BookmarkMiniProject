@@ -1,8 +1,8 @@
 package ui;
 
-import database.BookDAO;
-import database.Database;
-import database.PodcastDAO;
+import bookmarkdb.BookDAO;
+import bookmarkdb.Database;
+import bookmarkdb.PodcastDAO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,8 +10,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tables.Book;
-import tables.Podcast;
+import bookmarkmodels.Book;
+import bookmarkmodels.Podcast;
 
 public class UI implements Runnable {
 

@@ -1,5 +1,5 @@
 
-package tables;
+package bookmarkmodels;
 
 public class Podcast {
     private String name;

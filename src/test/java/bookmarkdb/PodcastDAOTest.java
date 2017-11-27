@@ -1,6 +1,8 @@
 
-package database;
+package bookmarkdb;
 
+import bookmarkdb.Database;
+import bookmarkdb.PodcastDAO;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-import tables.Podcast;
+import bookmarkmodels.Podcast;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PodcastDAOTest {
