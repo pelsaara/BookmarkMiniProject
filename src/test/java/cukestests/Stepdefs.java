@@ -36,6 +36,15 @@ public class Stepdefs {
     InputStream standardIn;
     String input;
 
+    /**
+     * Before test execution 
+     * 1 standard system input and output are stored in class variables
+     * {@link #standardIn} and {@link #standardOut}, respectively
+     * 2 class variable {@link #input}, which is later used to simulate input, is
+     * set to empty string
+     * 3 new database file is created, a new {@link Database} object is
+     * initialised with it and stored in variable {@link #database}.
+     */
     @Before
     public void setUp() {
         input = "";
@@ -46,6 +55,10 @@ public class Stepdefs {
         bookDao = new BookDAO(database);
     }
 
+    /**
+     * After test execution system input and output are restored to their
+     * original values and test database file is deleted.
+     */
     @After
     public void tearDown() throws IOException {
         System.setIn(standardIn);
@@ -123,6 +136,10 @@ public class Stepdefs {
         assertTrue(output.contains("Either title or author is not valid (cannot be empty)"));
     }
 
+    /**
+     * Sets system input as a byte array, which represents variable
+     * {@link #input} and output as variable {@link #outputStream}.
+     */
     private void setIOStreams() {
         inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
@@ -131,6 +148,10 @@ public class Stepdefs {
         System.setOut(new PrintStream(outputStream));
     }
 
+    /**
+     * Adds a line to the input, which simulates same behaviour as typing text
+     * and pressing enter in the command line when it is read.
+     */
     private void addInputLine(String string) {
         input += System.getProperty("line.separator") + string;
     }
