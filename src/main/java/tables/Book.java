@@ -51,5 +51,24 @@ public class Book {
         return "Book: " + "title: " + title + ", author: " + author + ", ISBN: " + ISBN;
     }
     
-    
+    @Override
+    public boolean equals(Object o) {
+        if (!o.getClass().equals(Book.class)) {
+            return false;
+        }
+        
+        Book comp = (Book) o;
+        return comp.getAuthor().equals(this.author)
+                && comp.getISBN().equals(this.ISBN)
+                && comp.getTitle().equals(this.title);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + this.title.hashCode();
+        hash = 79 * hash + this.author.hashCode();
+        hash = 79 * hash + this.ISBN.hashCode();
+        return hash;
+    }
 }

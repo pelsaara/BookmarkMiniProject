@@ -23,6 +23,12 @@ public class UI implements Runnable {
         bookDAO = new BookDAO(database);
     }
 
+    public UI(Database database, BufferedReader buff) {
+        this.database = database;
+        this.br = buff;
+        bookDAO = new BookDAO(database);        
+    }
+
     @Override
     public void run() {
         
