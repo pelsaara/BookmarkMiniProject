@@ -145,6 +145,11 @@ public class Database implements AbstractDatabase {
                 + "(title TEXT NOT NULL,"
                 + " author TEXT NOT NULL,"
                 + " ISBN TEXT)");
+        list.add("CREATE TABLE Podcast"
+                + "(name TEXT,"
+                + " author TEXT NOT NULL,"
+                + " title TEXT NOT NULL,"
+                + " url TEXT)");
 
         return list;
     }
