@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -79,7 +80,7 @@ public class DatabaseTest {
         database.init();
         String output = outContent.toString();
 
-        verify(statement).executeUpdate(any(String.class));
+        verify(statement, times(2)).executeUpdate(any(String.class));
         assertTrue(output.contains(CREATE_STMT));
     }
 
