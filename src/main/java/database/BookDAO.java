@@ -41,7 +41,7 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     }
 
     @Override
-    public Book findOne(Integer key) throws SQLException {
+    public Book findOne(Book b) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -68,13 +68,13 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     }
 
     @Override
-    public void update(Integer key, Book t) throws SQLException {
+    public void update(Book b) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(Integer key) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Book book) throws SQLException {
+        database.update("DELETE FROM Book WHERE author=? AND title=?", book.getAuthor(), book.getTitle());
     }
 
 }

@@ -72,6 +72,16 @@ public class UI implements Runnable {
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                } else if (command.equals("delete book")) {
+                    System.out.println("Title:");
+                    String title = br.readLine();
+                    System.out.println("Author:");
+                    String author = br.readLine();
+                    try {
+                        bookDAO.delete(new Book(title, author));
+                    } catch (SQLException ex) {
+                        Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             } catch (IOException ex) {
                 Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);

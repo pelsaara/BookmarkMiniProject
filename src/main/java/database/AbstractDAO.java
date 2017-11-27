@@ -10,11 +10,11 @@ public interface AbstractDAO<T, K> {
 
     T create(T t) throws SQLException;
 
-    T findOne(K key) throws SQLException;
+    T findOne(T t) throws SQLException;
 
     List<T> findAll() throws SQLException;
 
-    void update(K key, T t) throws SQLException;
+    void update(T t) throws SQLException;
 
-    void delete(K key) throws SQLException;
+    void delete(T t) throws SQLException;
 }

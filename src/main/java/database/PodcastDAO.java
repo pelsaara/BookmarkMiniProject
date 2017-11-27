@@ -29,7 +29,7 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public Podcast findOne(Integer key) throws SQLException {
+    public Podcast findOne(Podcast p) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -57,12 +57,12 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public void update(Integer key, Podcast t) throws SQLException {
+    public void update(Podcast p) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void delete(Integer key) throws SQLException {
+    public void delete(Podcast p) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
