@@ -62,7 +62,7 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public void delete(Podcast p) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Podcast podcast) throws SQLException {
+        database.update("DELETE FROM Podcast WHERE author=? AND title=?", podcast.getAuthor(), podcast.getTitle());
     }
 }
