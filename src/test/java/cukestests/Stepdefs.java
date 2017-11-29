@@ -253,6 +253,19 @@ public class Stepdefs {
         String output = outputStream.toString();
         assertTrue(output.contains(title1) && output.contains(title2));
     }
+    
+    @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is deleted$")
+    public void added_book_is_deleted(String title, String author, String ISBN) throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Book deleted!"));
+    }
 
     /**
      * Sets system input as a byte array, which represents variable
