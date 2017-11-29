@@ -53,15 +53,7 @@ public class PodcastDAOTest {
                 eq("Name"), eq("Title"), eq("Author"), eq("Url"));
     }
 
-    @Test
-    public void testDelete() throws SQLException {
-        podDAO.create(newPodcast);
-        Podcast newerPodcast = new Podcast("Name2", "Author2", "Title2", "Url2");
-        podDAO.create(newerPodcast);
-
-        podDAO.delete(newerPodcast);
-        verify(database).update("DELETE FROM Podcast WHERE author=? AND title=? VALUES (?, ?, ?, ?)", eq("Author2"), eq("Title2"));
-    }
+    
 
 //    @Test
 //    public void testFindOne() {
@@ -88,5 +80,8 @@ public class PodcastDAOTest {
 //    @Test
 //    public void testUpdate()  {
 //        
+//    }
+//    @Test
+//    public void testDelete() throws SQLException {
 //    }
 }
