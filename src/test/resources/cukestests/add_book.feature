@@ -32,4 +32,4 @@ Feature: User can add new book to the database with adequate parameters
        When  title "Uusi12345" and author "kirjailija" and ISBN "111--111--111" are entered
        And   command "add book" is selected
        And   title "Uusi12345" and author "kirjailija" and ISBN "" are entered
-       Then  only one book is added with title "Uusi12345" and author "kirjailija" and ISBN "111--111--111"
+       Then  only one book is added with title "Uusi12345" and author "kirjailija"

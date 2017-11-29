@@ -160,6 +160,26 @@ public class Stepdefs {
         assertTrue(output.contains("Book has already been added in the library"));
     }
 
+    @Then("^only one book is added with title \"([^\"]*)\" and author \"([^\"]*)\"$")
+    public void only_one_book_is_added_with_title_and_author(String title, String author) throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Book> allBooks = bookDao.findAll();
+
+        assertEquals(allBooks.size(), 1);
+        assertEquals(allBooks.get(0).getAuthor(), author);
+        assertEquals(allBooks.get(0).getTitle(), title);
+        String output = outputStream.toString();
+        
+        assertTrue(output.contains("Book added!"));
+        assertTrue(output.contains("Book has already been added in the library"));
+    }
+
     @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is not added$")
     public void book_without_title_or_author_is_not_added(String title, String author, String ISBN) throws Throwable {
         Book notAddedBook = new Book(title, author, ISBN);
