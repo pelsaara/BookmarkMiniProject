@@ -1,7 +1,7 @@
 package ui;
 
-import database.Connector;
-import database.Database;
+import bookmarkdb.Connector;
+import bookmarkdb.Database;
 import java.sql.SQLException;
 
 /**

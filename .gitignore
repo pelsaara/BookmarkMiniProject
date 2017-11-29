@@ -2,7 +2,7 @@
 build/
 /.nb-gradle/
 
-.gradle/
 bin/
-/.gradle/
-/bin/
+
+.*
+!/.gitignore

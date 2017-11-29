@@ -1,4 +1,4 @@
-package database;
+package bookmarkdb;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -17,7 +17,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import tables.Book;
+import bookmarkmodels.Book;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BookDAOTest {
@@ -37,7 +39,9 @@ public class BookDAOTest {
 		results.put("title", Arrays.asList("Title"));
 		results.put("author", Arrays.asList("Author"));
 		results.put("ISBN", Arrays.asList("ISBN"));
-	}
+
+                when(database.query(any(String.class))).thenReturn(results);
+        }
 
 	@After
 	public void tearDown() throws Exception {
@@ -48,7 +52,6 @@ public class BookDAOTest {
 	public void testCreate() throws SQLException {
 		Book newerBook = new Book("Title2", "Author2", "ISBN2");
 
-                when(database.query("SELECT * FROM Book")).thenReturn(results);
 		bookDAO.create(newerBook);
 		
 		verify(database).update(eq("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)"), 
@@ -62,20 +65,25 @@ public class BookDAOTest {
 
 	@Test
 	public void testFindAll() throws SQLException {	
-		when(database.query("SELECT * FROM Book")).thenReturn(results);
-		
 		bookDAO.findAll();
 		
 		verify(database).query(eq("SELECT * FROM Book"));
 	}
 
+        @Test
+        public void testDelete() throws SQLException {
+                when(database.update(any(String.class), any(String.class),
+                        any(String.class))).thenReturn(1);
+                
+                boolean deleted = bookDAO.delete(newBook);
+                
+                verify(database).update("DELETE FROM Book WHERE author=? AND title=?",
+                        newBook.getAuthor(), newBook.getTitle());
+                
+                assertTrue(deleted);
+        }
 //	@Test
 //	public void testUpdate() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testDelete() {
 //		fail("Not yet implemented");
 //	}
 }

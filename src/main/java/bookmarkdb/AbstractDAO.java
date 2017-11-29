@@ -1,4 +1,4 @@
-package database;
+package bookmarkdb;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,5 +16,5 @@ public interface AbstractDAO<T, K> {
 
     void update(T t) throws SQLException;
 
-    void delete(T t) throws SQLException;
+    boolean delete(T t) throws SQLException;
 }

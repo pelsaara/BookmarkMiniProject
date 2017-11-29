@@ -1,5 +1,6 @@
-package database;
+package bookmarkdb;
 
+import bookmarkdb.Database;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.sql.Connection;
@@ -45,7 +46,7 @@ public class DatabaseTest {
     private Database database;
     private ByteArrayOutputStream outContent;
     private PrintStream standardOut;
-    private static final String CREATE_STMT = "CREATE TABLE Book";
+    private static final String CREATE_STMT = "CREATE TABLE IF NOT EXISTS Book";
 
     public DatabaseTest() {
     }

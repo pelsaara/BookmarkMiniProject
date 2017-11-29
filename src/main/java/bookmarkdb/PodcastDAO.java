@@ -1,11 +1,11 @@
 
-package database;
+package bookmarkdb;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import tables.Podcast;
+import bookmarkmodels.Podcast;
 
 /**
  *  Class for accessing database table for bookmarks of type 'Podcast'.
@@ -23,6 +23,15 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
 
     @Override
     public Podcast create(Podcast podcast) throws SQLException {
+        
+        List<Podcast> allPodcasts = this.findAll();
+        for (Podcast existingPod : allPodcasts) {
+            if (podcast.getAuthor().equals(existingPod.getAuthor())
+                    && podcast.getName().equals(existingPod.getName())
+                    && podcast.getTitle().equals(existingPod.getTitle())) {
+                return null;
+            }
+        }
         database.update("INSERT INTO Podcast(name, title, author, url) VALUES (?, ?, ?, ?)", podcast.getName(), podcast.getTitle(), podcast.getAuthor(), podcast.getUrl());
         
         return podcast;
@@ -38,7 +47,7 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
         List<Podcast> podcasts = new ArrayList<>();
         Map<String, List<String>> results = database.query("SELECT * FROM Podcast");
         
-        for (int i = 0; i < results.get(results.keySet().toArray()[0]).size(); i++) {
+        for (int i = 0; i < results.get("title").size(); i++) {
             Podcast podcast = new Podcast();
             for (String col : results.keySet()) {
                 if (col.equals("name")) {
@@ -62,7 +71,10 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public void delete(Podcast p) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean delete(Podcast podcast) throws SQLException {
+        int deleted =
+                database.update("DELETE FROM Podcast WHERE author=? AND title=? AND name=?",
+                        podcast.getAuthor(), podcast.getTitle(), podcast.getName());
+        return deleted == 1;
     }
 }

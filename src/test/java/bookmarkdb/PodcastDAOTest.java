@@ -1,5 +1,4 @@
-
-package database;
+package bookmarkdb;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -15,74 +14,77 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
-import tables.Podcast;
+import bookmarkmodels.Podcast;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PodcastDAOTest {
-    
+
     private PodcastDAO podDAO;
     private Database database;
     private Map<String, List<String>> results;
     private Podcast newPodcast;
-    
-    
+
     @Before
     public void setup() throws Exception {
         database = mock(Database.class);
         podDAO = new PodcastDAO(database);
         results = new HashMap<String, List<String>>();
-        
+
         newPodcast = new Podcast("Name", "Author", "Title", "Url");
         results.put("name", Arrays.asList("Name"));
         results.put("author", Arrays.asList("Author"));
         results.put("title", Arrays.asList("Title"));
         results.put("url", Arrays.asList("Url"));
+
+        when(database.query("SELECT * FROM Podcast")).thenReturn(results);
     }
-    
+
     @After
     public void tearDown() throws Exception {
         database.update("DROP TABLE Podcast");
     }
-    
+
     @Test
     public void testCreate() throws SQLException {
         podDAO.create(newPodcast);
+
+        Podcast newerPodcast = new Podcast("Name2", "Author2", "Title2", "Url2");
+
+        podDAO.create(newerPodcast);
         
         verify(database).update(eq("INSERT INTO Podcast(name, title, author, url) VALUES (?, ?, ?, ?)"),
-                eq("Name"), eq("Title"), eq("Author"), eq("Url"));
+                eq("Name2"), eq("Title2"), eq("Author2"), eq("Url2"));
     }
+
     
+
 //    @Test
 //    public void testFindOne() {
 //        
 //    }
-    
     @Test
-    public void testFindAll() throws SQLException {
-        Podcast newerPodcast = new Podcast("Name2", "Author2", "Title2", "Url2");
-        results.put("name", Arrays.asList("Name2"));
-        results.put("author", Arrays.asList("Author2"));
-        results.put("title", Arrays.asList("Title2"));
-        results.put("url", Arrays.asList("Url2"));
-        
-        podDAO.create(newPodcast);
-        podDAO.create(newerPodcast);
-        
-        when(database.query("SELECT * FROM Podcast")).thenReturn(results);
-        
+    public void testFindAll() throws SQLException {        
         podDAO.findAll();
-        
+
         verify(database).query(eq("SELECT * FROM Podcast"));
     }
-    
+
 //    @Test
 //    public void testUpdate()  {
 //        
 //    }
-//    
-//    @Test
-//    public void testDelete() {
-//        
-//    }
-    
-} 
+    @Test
+    public void testDelete() throws SQLException {
+        when(database.update(any(String.class), any(String.class),
+                any(String.class), any(String.class))).thenReturn(1);
+        
+        boolean deleted = podDAO.delete(newPodcast);
+        
+        verify(database).update("DELETE FROM Podcast WHERE author=? AND title=? AND name=?",
+                        newPodcast.getAuthor(), newPodcast.getTitle(), newPodcast.getName());
+        
+        assertTrue(deleted);
+    }
+}
