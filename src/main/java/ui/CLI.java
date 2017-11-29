@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class CLI {
 
     public static void main(String[] args) throws SQLException {
-        Database database = new Database(new Connector("jdbc:sqlite:test.db"));
+        Database database = new Database(new Connector("jdbc:sqlite:bookmarks.db"));
         database.init();
         //database.setDebugMode(true);
 
