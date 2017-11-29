@@ -68,6 +68,7 @@ public class DatabaseTest {
         when(connection.createStatement()).thenReturn(statement);
 
         database = new Database(() -> connection);
+        database.setDebugMode(true);
     }
 
     @After
