@@ -83,6 +83,14 @@ public class Stepdefs {
         addInputLine(ISBN);
     }
     
+    @Given("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" has been added$")
+    public void podcast_has_been_added(String name, String author, String title, String ISBN) throws Throwable {
+        addInputLine("add podcast");
+        addInputLine(name);
+        addInputLine(author);
+        addInputLine(title);
+        addInputLine(ISBN);
+    }
 
     @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
     public void title_and_author_and_ISBN_are_entered(String title, String author, String ISBN) throws Throwable {
@@ -309,6 +317,53 @@ public class Stepdefs {
         assertTrue(output.contains("Book deleted!"));
     }
 
+    @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is deleted$")
+    public void added_podcast_is_deleted(String name, String author, String title, String ISBN) throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Podcast deleted!"));
+    }
+    
+    @Then("^no books are deleted$")
+    public void no_books_are_deleted() throws Throwable {
+
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Book> allBooks = bookDao.findAll();
+        assertEquals(allBooks.size(), 1);
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Non-existent book cannot be deleted"));
+    }
+    
+    @Then("^no podcasts are deleted$")
+    public void no_podcasts_are_deleted() throws Throwable {
+
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Podcast> allPodcasts = podcastDao.findAll();
+        assertEquals(allPodcasts.size(), 1);
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Non-existent podcast cannot be deleted"));
+    }
+    
     /**
      * Sets system input as a byte array, which represents variable
      * {@link #input} and output as variable {@link #outputStream}.

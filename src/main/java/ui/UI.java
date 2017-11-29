@@ -138,9 +138,9 @@ public class UI implements Runnable {
                     deletable.setName(name);
                     try {
                         if (podcastDAO.delete(deletable)) {
-                            System.out.println("\nPodcast poistettu!");
+                            System.out.println("\nPodcast deleted!");
                         } else {
-                            System.out.println("\nNon-existent bookmark cannot be deleted");
+                            System.out.println("\nNon-existent podcast cannot be deleted");
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
