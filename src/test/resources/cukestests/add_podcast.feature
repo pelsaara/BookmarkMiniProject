@@ -14,3 +14,28 @@ Feature: User can add new book to the database with adequate parameters
        Given command "add podcast" is selected
        When  name "" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com" are entered
        Then  podcast with name "" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com" is not added
+       
+   Scenario: user cannot add new podcast without author
+       Given command "add podcast" is selected
+       When  name "NewPodcastName" and author "" and title "NewPodcastTitle" and URL "https://www.podcast.com" are entered
+       Then  podcast with name "NewPodcastName" and author "" and title "NewPodcastTitle" and URL "https://www.podcast.com" is not added
+       
+   Scenario: user cannot add new podcast without title
+       Given command "add podcast" is selected
+       When  name "NewPodcastName" and author "NewPodcastAuthor" and title "" and URL "https://www.podcast.com" are entered
+       Then  podcast with name "NewPodcastName" and author "NewPodcastAuthor" and title "" and URL "https://www.podcast.com" is not added
+       
+   Scenario: user cannot add the same podcast twice with same name, author and title
+       Given command "add podcast" is selected
+       When  name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com" are entered
+       And   command "add podcast" is selected
+       And   name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com" are entered
+       Then  only one podcast is added with name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com"
+       
+   Scenario: user cannot add the same podcast twice with same name, author and title, and different url
+       Given command "add podcast" is selected
+       When  name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.podcast.com" are entered
+       And   command "add podcast" is selected
+       And   name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle" and URL "https://www.AnotherPodcastSite.com" are entered
+       Then  only one podcast is added with name "NewPodcastName" and author "NewPodcastAuthor" and title "NewPodcastTitle"
+       

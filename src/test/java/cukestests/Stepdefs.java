@@ -159,6 +159,48 @@ public class Stepdefs {
         assertTrue(output.contains("Book added!"));
         assertTrue(output.contains("Book has already been added in the library"));
     }
+    
+    @Then("^only one podcast is added with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\"$")
+    public void only_one_podcast_is_added(String name, String author, String title, String URL) throws Throwable {
+        Podcast addedPodcast = new Podcast(name, author, title, URL);
+
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Podcast> allPodcasts = podcastDao.findAll();
+
+        assertEquals(allPodcasts.size(), 1);
+        assertEquals(allPodcasts.get(0), addedPodcast);
+        String output = outputStream.toString();
+        
+        assertTrue(output.contains("Podcast added!"));
+        assertTrue(output.contains("Podcast has already been added in the library"));
+    }
+    
+    @Then("^only one podcast is added with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\"$")
+    public void only_one_podcast_is_added_with_name_and_author_and_title(String name, String author, String title) throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Podcast> allPodcasts = podcastDao.findAll();
+
+        assertEquals(allPodcasts.size(), 1);
+        assertEquals(allPodcasts.get(0).getName(), name);
+        assertEquals(allPodcasts.get(0).getAuthor(), author);
+        assertEquals(allPodcasts.get(0).getTitle(), title);
+        String output = outputStream.toString();
+        
+        assertTrue(output.contains("Podcast added!"));
+        assertTrue(output.contains("Podcast has already been added in the library"));
+    }
 
     @Then("^only one book is added with title \"([^\"]*)\" and author \"([^\"]*)\"$")
     public void only_one_book_is_added_with_title_and_author(String title, String author) throws Throwable {
