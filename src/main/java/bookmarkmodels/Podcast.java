@@ -58,5 +58,16 @@ public class Podcast {
         return "Podcast: " + "name: " + name + ", title: " + title + ", author: " + author + ", url: " + url;
     }
     
-    
+    @Override
+    public boolean equals(Object o) {
+        if (!o.getClass().equals(Podcast.class)) {
+            return false;
+        }
+        
+        Podcast comp = (Podcast) o;
+        return  comp.getName().equals(this.name)
+        		&& comp.getAuthor().equals(this.author)
+                && comp.getUrl().equals(this.url)
+                && comp.getTitle().equals(this.title);
+    }
 }
