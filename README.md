@@ -23,9 +23,7 @@ Yleisesti:
 
 ## Asennusohjeet
 
-1. Kloonaa repositorio: git@github.com:llmlks/BookmarkMiniProject.git
-2. Aja sovellus komennolla "gradle run"
+1. Lataa jar-tiedosto Releases välilehdeltä
+2. Navigoi komentorivillä kansioon, jossa ladattu tiedosto sijaitsee
+3. Aja sovellus komennolla "java -jar BookmarkMiniProject-all.jar"
 
-Kirjan lisäys: Anna komento "add book", ja sen jälkeen ohjelman kysymät otsikko, kirjailija ja ISBN-numero.
-
-Kirjojen selaus: Anna komento "browse".
