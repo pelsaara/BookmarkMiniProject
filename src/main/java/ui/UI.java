@@ -38,7 +38,7 @@ public class UI implements Runnable {
     public void run() {
 
         while (true) {
-            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo delete a book type \"delete book\".\nTo add a book type \"add podcast\".\nTo delete a podcast type \"delete podcast\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
+            System.out.println("\nTo list all your bookmarks type \"browse\".\nTo add a book type \"add book\".\nTo delete a book type \"delete book\".\nTo add a podcast type \"add podcast\".\nTo delete a podcast type \"delete podcast\".\nTo quit the program type \"quit\".\n\nWhat to do?\n");
 
             String command;
             try {

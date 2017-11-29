@@ -141,11 +141,11 @@ public class Database implements AbstractDatabase {
         ArrayList<String> list = new ArrayList<>();
 
         // SQL statements for creating tables
-        list.add("CREATE TABLE Book"
+        list.add("CREATE TABLE IF NOT EXISTS Book"
                 + "(title TEXT NOT NULL,"
                 + " author TEXT NOT NULL,"
                 + " ISBN TEXT)");
-        list.add("CREATE TABLE Podcast"
+        list.add("CREATE TABLE IF NOT EXISTS Podcast"
                 + "(name TEXT,"
                 + " author TEXT NOT NULL,"
                 + " title TEXT NOT NULL,"
