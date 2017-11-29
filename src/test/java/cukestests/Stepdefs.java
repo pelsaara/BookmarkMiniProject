@@ -31,7 +31,6 @@ public class Stepdefs {
     Database database;
     UI ui;
     BufferedReader buffer;
-    //Book newBook;
     BookDAO bookDao;
     PodcastDAO podcastDao;
     ByteArrayInputStream inputStream;
