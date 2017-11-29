@@ -92,8 +92,11 @@ public class UI implements Runnable {
                     System.out.println("Author:");
                     String author = br.readLine();
                     try {
-                        bookDAO.delete(new Book(title, author));
-                        System.out.println("\nKirja poistettu!");
+                        if (bookDAO.delete(new Book(title, author))) {
+                            System.out.println("\nBookmark deleted!");
+                        } else {
+                            System.out.println("\nNon-existent bookmark cannot be deleted");
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -111,20 +114,34 @@ public class UI implements Runnable {
                     podTitle = br.readLine();
                     System.out.println("Url:");
                     podUrl = br.readLine();
-                    try {
-                        podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl));
-                        System.out.println("\nPodcast added!");
-                    } catch (SQLException exe) {
-                        Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+                    if (podName.isEmpty() || podAuthor.isEmpty() || podTitle.isEmpty()) {
+                        System.out.println("Either name, author or title is invalid (all must be non-empty)");
+                    } else {
+                        try {
+                            if (podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl)) == null) {
+                                System.out.println("\nPodcast has already been added in the library");
+                            } else {
+                                System.out.println("\nPodcast added!");
+                            }
+                        } catch (SQLException exe) {
+                            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+                        }
                     }
                 } else if (command.equals("delete podcast")) {
-                    System.out.println("Title:");
-                    String title = br.readLine();
+                    System.out.println("Name:");
+                    String name = br.readLine();
                     System.out.println("Author:");
                     String author = br.readLine();
+                    System.out.println("Title:");
+                    String title = br.readLine();
+                    Podcast deletable = new Podcast(author, title);
+                    deletable.setName(name);
                     try {
-                        podcastDAO.delete(new Podcast(author, title));
-                        System.out.println("\nPodcast poistettu!");
+                        if (podcastDAO.delete(deletable)) {
+                            System.out.println("\nPodcast poistettu!");
+                        } else {
+                            System.out.println("\nNon-existent bookmark cannot be deleted");
+                        }
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
                     }
