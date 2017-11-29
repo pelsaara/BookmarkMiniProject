@@ -49,8 +49,8 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     public List<Book> findAll() throws SQLException {
         List<Book> books = new ArrayList<>();
         Map<String, List<String>> results = database.query("SELECT * FROM Book");
-        
-        for (int i = 0; i < results.get(results.keySet().toArray()[0]).size(); i++) {
+
+        for (int i = 0; i < results.get("title").size(); i++) {
             Book book = new Book();
             for (String col : results.keySet()) {
                 if (col.equals("title")) {
@@ -73,8 +73,11 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     }
 
     @Override
-    public void delete(Book book) throws SQLException {
-        database.update("DELETE FROM Book WHERE author=? AND title=?", book.getAuthor(), book.getTitle());
+    public boolean delete(Book book) throws SQLException {
+        int deleted = 
+                database.update("DELETE FROM Book WHERE author=? AND title=?",
+                        book.getAuthor(), book.getTitle());
+        return deleted == 1;
     }
 
 }
