@@ -111,12 +111,7 @@ public class Stepdefs {
     public void new_book_is_added(String title, String author, String ISBN) throws Throwable {
         Book addedBook = new Book(title, author, ISBN);
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Book> allBooks = bookDao.findAll();
 
@@ -131,12 +126,7 @@ public class Stepdefs {
     public void new_podcast_is_added(String name, String author, String title, String URL) throws Throwable {
         Podcast addedPodcast = new Podcast(name, author, title, URL);
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Podcast> allPodcasts = podcastDao.findAll();
 
@@ -151,12 +141,7 @@ public class Stepdefs {
     public void only_one_book_is_added(String title, String author, String ISBN) throws Throwable {
         Book addedBook = new Book(title, author, ISBN);
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Book> allBooks = bookDao.findAll();
 
@@ -172,12 +157,7 @@ public class Stepdefs {
     public void only_one_podcast_is_added(String name, String author, String title, String URL) throws Throwable {
         Podcast addedPodcast = new Podcast(name, author, title, URL);
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Podcast> allPodcasts = podcastDao.findAll();
 
@@ -191,12 +171,7 @@ public class Stepdefs {
     
     @Then("^only one podcast is added with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\"$")
     public void only_one_podcast_is_added_with_name_and_author_and_title(String name, String author, String title) throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Podcast> allPodcasts = podcastDao.findAll();
 
@@ -212,12 +187,7 @@ public class Stepdefs {
 
     @Then("^only one book is added with title \"([^\"]*)\" and author \"([^\"]*)\"$")
     public void only_one_book_is_added_with_title_and_author(String title, String author) throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Book> allBooks = bookDao.findAll();
 
@@ -233,12 +203,7 @@ public class Stepdefs {
     @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is not added$")
     public void book_without_title_or_author_is_not_added(String title, String author, String ISBN) throws Throwable {
         Book notAddedBook = new Book(title, author, ISBN);
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Book> allBooks = bookDao.findAll();
         assertFalse(allBooks.contains(notAddedBook));
@@ -250,12 +215,7 @@ public class Stepdefs {
     @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is not added$")
     public void podcast_without_name_or_author_or_title_is_not_added(String name, String author, String title, String URL) throws Throwable {
         Podcast notAddedPodcast = new Podcast(name, author, title, URL);
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Podcast> allPodcasts = podcastDao.findAll();
         assertFalse(allPodcasts.contains(notAddedPodcast));
@@ -266,12 +226,7 @@ public class Stepdefs {
     
     @Then("^empty list of books is printed$")
     public void empty_list_of_books_is_printed() throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-        
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
         
         String output = outputStream.toString();
         assertTrue(!output.contains("Book:"));
@@ -280,12 +235,8 @@ public class Stepdefs {
     @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is printed$")
     public void book_is_printed(String title, String author, String ISBN) throws Throwable {
         Book book = new Book(title, author, ISBN);
-        addInputLine("quit");
-        setIOStreams();
-        
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+
+        runApplication();
         
         String output = outputStream.toString();
         assertTrue(output.contains(book.toString()));
@@ -293,25 +244,23 @@ public class Stepdefs {
     
     @Then("^book with title \"([^\"]*)\" and book with title \"([^\"]*)\" is printed$")
     public void two_books_are_printed(String title1, String title2) throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-        
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
         
         String output = outputStream.toString();
         assertTrue(output.contains(title1) && output.contains(title2));
     }
-    
+
+    @Then("^podcast with title \"([^\"]*)\" and book with title \"([^\"]*)\" are printed$")
+    public void podcast_and_book_are_printed(String podTitle, String bookTitle) {
+        runApplication();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(podTitle) && output.contains(bookTitle));
+    }
+
     @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is deleted$")
     public void added_book_is_deleted(String title, String author, String ISBN) throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         String output = outputStream.toString();
         assertTrue(output.contains("Book deleted!"));
@@ -319,12 +268,7 @@ public class Stepdefs {
 
     @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is deleted$")
     public void added_podcast_is_deleted(String name, String author, String title, String ISBN) throws Throwable {
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         String output = outputStream.toString();
         assertTrue(output.contains("Podcast deleted!"));
@@ -333,12 +277,7 @@ public class Stepdefs {
     @Then("^no books are deleted$")
     public void no_books_are_deleted() throws Throwable {
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Book> allBooks = bookDao.findAll();
         assertEquals(allBooks.size(), 1);
@@ -350,30 +289,13 @@ public class Stepdefs {
     @Then("^no podcasts are deleted$")
     public void no_podcasts_are_deleted() throws Throwable {
 
-        addInputLine("quit");
-        setIOStreams();
-
-        buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
-        ui.run();
+        runApplication();
 
         List<Podcast> allPodcasts = podcastDao.findAll();
         assertEquals(allPodcasts.size(), 1);
         
         String output = outputStream.toString();
         assertTrue(output.contains("Non-existent podcast cannot be deleted"));
-    }
-    
-    /**
-     * Sets system input as a byte array, which represents variable
-     * {@link #input} and output as variable {@link #outputStream}.
-     */
-    private void setIOStreams() {
-        inputStream = new ByteArrayInputStream(input.getBytes());
-        System.setIn(inputStream);
-
-        outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
     }
 
     /**
@@ -382,5 +304,29 @@ public class Stepdefs {
      */
     private void addInputLine(String string) {
         input += System.getProperty("line.separator") + string;
+    }
+
+    /**
+     * Prepares System input and ouput, and runs the application. First a 
+     * command "quit" is added to the input to make sure the application stops 
+     * running. Then sets system input as a byte array, which represents 
+     * variable {@link #input} and output as variable {@link #outputStream}.
+     * Finally creates a new instance of {@link BufferedReader} and along with
+     * {@link #database} passes it as parameter to create and run an instance 
+     * of the user interface.
+     */
+
+    private void runApplication() {
+        addInputLine("quit");
+
+        inputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(inputStream);
+
+        outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();        
     }
 }
