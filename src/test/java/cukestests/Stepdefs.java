@@ -177,6 +177,23 @@ public class Stepdefs {
         assertTrue(output.contains("Either title or author is not valid (cannot be empty)"));
     }
     
+    @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is not added$")
+    public void podcast_without_name_or_author_or_title_is_not_added(String name, String author, String title, String URL) throws Throwable {
+        Podcast notAddedPodcast = new Podcast(name, author, title, URL);
+        addInputLine("quit");
+        setIOStreams();
+
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+
+        List<Podcast> allPodcasts = podcastDao.findAll();
+        assertFalse(allPodcasts.contains(notAddedPodcast));
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Either name, author or title is invalid (all must be non-empty)"));
+    }
+    
     @Then("^empty list of books is printed$")
     public void empty_list_of_books_is_printed() throws Throwable {
         addInputLine("quit");
