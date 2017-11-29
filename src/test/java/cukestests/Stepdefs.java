@@ -57,6 +57,15 @@ public class Stepdefs {
     public void command_add_book_selected(String command) throws Throwable {
         addInputLine(command);
     }
+    
+    @Given("^book with title \"([^\"]*)\", author \"([^\"]*)\" and ISBN \"([^\"]*)\" has been added$")
+    public void book_has_been_added(String title, String author, String ISBN) throws Throwable {
+        addInputLine("add book");
+        addInputLine(title);
+        addInputLine(author);
+        addInputLine(ISBN);
+    }
+    
 
     @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
     public void title_and_author_and_ISBN_are_entered(String title, String author, String ISBN) throws Throwable {
@@ -121,6 +130,46 @@ public class Stepdefs {
 
         String output = outputStream.toString();
         assertTrue(output.contains("Either title or author is not valid (cannot be empty)"));
+    }
+    
+    @Then("^empty list of books is printed$")
+    public void empty_list_of_books_is_printed() throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+        
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+        
+        String output = outputStream.toString();
+        assertTrue(!output.contains("Book:"));
+    }
+    
+    @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is printed$")
+    public void book_is_printed(String title, String author, String ISBN) throws Throwable {
+        Book book = new Book(title, author, ISBN);
+        addInputLine("quit");
+        setIOStreams();
+        
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains(book.toString()));
+    }
+    
+    @Then("^book with title \"([^\"]*)\" and book with title \"([^\"]*)\" is printed$")
+    public void two_books_are_printed(String title1, String title2) throws Throwable {
+        addInputLine("quit");
+        setIOStreams();
+        
+        buffer = new BufferedReader(new InputStreamReader(System.in));
+        ui = new UI(database, buffer);
+        ui.run();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains(title1) && output.contains(title2));
     }
 
     private void setIOStreams() {
