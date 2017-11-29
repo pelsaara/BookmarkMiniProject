@@ -93,9 +93,9 @@ public class UI implements Runnable {
                     String author = br.readLine();
                     try {
                         if (bookDAO.delete(new Book(title, author))) {
-                            System.out.println("\nBookmark deleted!");
+                            System.out.println("\nBook deleted!");
                         } else {
-                            System.out.println("\nNon-existent bookmark cannot be deleted");
+                            System.out.println("\nNon-existent book cannot be deleted");
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
