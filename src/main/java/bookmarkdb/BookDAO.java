@@ -41,8 +41,22 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     }
 
     @Override
-    public Book findOne(Book b) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Book findOne(Book book) throws SQLException {
+        Map<String, List<String>> results = database.query("SELECT * FROM Book WHERE author=? AND title=?", book.getAuthor(), book.getTitle());
+        for (int i = 0; i < results.get("title").size(); i++) {
+            Book found = new Book();
+            for (String col : results.keySet()) {
+                if (col.equals("title")) {
+                    found.setTitle(results.get(col).get(i));
+                } else if (col.equals("author")) {
+                    found.setAuthor(results.get(col).get(i));
+                } else if (col.equals("ISBN")) {
+                    found.setISBN(results.get(col).get(i));
+                }
+            }
+            return found;
+        }
+        return null;
     }
 
     @Override
