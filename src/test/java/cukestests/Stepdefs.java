@@ -19,11 +19,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.sql.SQLException;
 import static org.junit.Assert.*;
 import java.util.List;
 import bookmarkmodels.Book;
 import bookmarkmodels.Podcast;
+import java.awt.Desktop;
+import java.net.URI;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import ui.UI;
 
 public class Stepdefs {
@@ -38,6 +41,7 @@ public class Stepdefs {
     PrintStream standardOut;
     InputStream standardIn;
     String input;
+    Desktop desktop;
 
     /**
      * Before test execution 
@@ -57,6 +61,7 @@ public class Stepdefs {
         database.init();
         bookDao = new BookDAO(database);
         podcastDao = new PodcastDAO(database);
+        desktop = mock(Desktop.class);
     }
 
     /**
@@ -105,6 +110,11 @@ public class Stepdefs {
     	addInputLine(author);
     	addInputLine(title);
         addInputLine(URL);
+    }
+
+    @When("^url \"([^\"]*)\" is entered$")
+    public void url_is_entered(String url) {
+        addInputLine(url);
     }
 
     @Then("^new book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
@@ -298,6 +308,14 @@ public class Stepdefs {
         assertTrue(output.contains("Non-existent podcast cannot be deleted"));
     }
 
+    @Then("^url \"([^\"]*)\" is opened in browser$")
+    public void url_is_opened_in_browser(String url) throws Throwable {
+
+        runApplication();
+
+        verify(desktop).browse(new URI(url));
+    }
+
     /**
      * Adds a line to the input, which simulates same behaviour as typing text
      * and pressing enter in the command line when it is read.
@@ -326,7 +344,7 @@ public class Stepdefs {
         System.setOut(new PrintStream(outputStream));
 
         buffer = new BufferedReader(new InputStreamReader(System.in));
-        ui = new UI(database, buffer);
+        ui = new UI(database, buffer, desktop);
         ui.run();        
     }
 }

@@ -68,7 +68,7 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     }
 
     @Override
-    public void update(Book b) throws SQLException {
+    public void update(Book... b) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -24,19 +24,22 @@ public class UI implements Runnable {
     private BookDAO bookDAO;
     private PodcastDAO podcastDAO;
     private VideoDAO videoDAO;
+    private Desktop desktop;
 
     public UI(Database database) {
         br = new BufferedReader(new InputStreamReader(System.in));
         bookDAO = new BookDAO(database);
         podcastDAO = new PodcastDAO(database);
         videoDAO = new VideoDAO(database);
+        desktop = Desktop.getDesktop();
     }
 
-    public UI(Database database, BufferedReader buff) {
+    public UI(Database database, BufferedReader buff, Desktop dt) {
         this.br = buff;
         bookDAO = new BookDAO(database);
         podcastDAO = new PodcastDAO(database);
         videoDAO = new VideoDAO(database);
+        desktop = dt;
     }
 
     @Override
@@ -155,8 +158,18 @@ public class UI implements Runnable {
         }
     }
     
-    private void editBook(Book book) {
+    private void editBook(Book book) throws IOException {
         System.out.println("Enter new title (leave empty if no need to edit):");
+        String title = br.readLine();
+        if (title.isEmpty()) {
+            title = book.getTitle();
+        }
+        System.out.println("Enter new author (leave empty if no need to edit):");
+        String author = br.readLine();
+        if (author.isEmpty()) {
+            author = book.getAuthor();
+        }
+        
     }
 
     private void commandDeleteBook() throws IOException {
@@ -230,7 +243,7 @@ public class UI implements Runnable {
     
     private void commandOpenVideoURL() {
         try {
-            Desktop.getDesktop().browse(new URI("http://www.google.com"));
+            desktop.browse(new URI("http://www.google.com"));
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
