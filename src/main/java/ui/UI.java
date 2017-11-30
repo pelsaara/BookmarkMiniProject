@@ -270,9 +270,9 @@ public class UI implements Runnable {
         Video deletable = new Video(url, name);
         try {
             if (videoDAO.delete(deletable)) {
-                System.out.println("\nPodcast deleted!");
+                System.out.println("\nVideo deleted!");
             } else {
-                System.out.println("\nNon-existent podcast cannot be deleted");
+                System.out.println("\nNon-existent video cannot be deleted");
             }
         } catch (SQLException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
