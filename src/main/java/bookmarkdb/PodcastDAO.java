@@ -66,7 +66,7 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public void update(Podcast p) throws SQLException {
+    public void update(Podcast... p) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
