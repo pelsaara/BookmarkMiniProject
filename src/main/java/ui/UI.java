@@ -156,7 +156,7 @@ public class UI implements Runnable {
     }
     
     private void editBook(Book book) {
-        
+        System.out.println("Enter new title (leave empty if no need to edit):");
     }
 
     private void commandDeleteBook() throws IOException {
@@ -266,9 +266,7 @@ public class UI implements Runnable {
     private void commandDeleteVideo() throws IOException {
         System.out.println("Url:");
         String url = br.readLine();
-        System.out.println("Name:");
-        String name = br.readLine();
-        Video deletable = new Video(url, name);
+        Video deletable = new Video(url);
         try {
             if (videoDAO.delete(deletable)) {
                 System.out.println("\nVideo deleted!");
