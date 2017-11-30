@@ -36,6 +36,7 @@ public class UI implements Runnable {
         this.br = buff;
         bookDAO = new BookDAO(database);
         podcastDAO = new PodcastDAO(database);
+        videoDAO = new VideoDAO(database);
     }
 
     @Override
