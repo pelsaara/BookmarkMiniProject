@@ -3,6 +3,7 @@ package ui;
 import bookmarkdb.BookDAO;
 import bookmarkdb.Database;
 import bookmarkdb.PodcastDAO;
+import bookmarkdb.VideoDAO;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import bookmarkmodels.Book;
 import bookmarkmodels.Podcast;
+import bookmarkmodels.Video;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,11 +23,13 @@ public class UI implements Runnable {
     private BufferedReader br;
     private BookDAO bookDAO;
     private PodcastDAO podcastDAO;
+    private VideoDAO videoDAO;
 
     public UI(Database database) {
         br = new BufferedReader(new InputStreamReader(System.in));
         bookDAO = new BookDAO(database);
         podcastDAO = new PodcastDAO(database);
+        videoDAO = new VideoDAO(database);
     }
 
     public UI(Database database, BufferedReader buff) {
@@ -130,8 +134,28 @@ public class UI implements Runnable {
         }
     }
 
-    private void commandEditBook() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void commandEditBook() throws IOException {
+        System.out.println("Which book do you want to edit?");
+        System.out.println("Title:");
+        String title = br.readLine();
+        System.out.println("Author");
+        String author = br.readLine();
+        Book toEdit = new Book(title, author);
+        try {
+            if (title.isEmpty() || author.isEmpty()) {
+                System.out.println("\nEither title or author is not valid (cannot be empty)");
+            } else if (bookDAO.findOne(toEdit) == null) {
+                System.out.println("There is no such book in the database.");
+            } else {
+                editBook(toEdit);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void editBook(Book book) {
+        
     }
 
     private void commandDeleteBook() throws IOException {
@@ -179,7 +203,7 @@ public class UI implements Runnable {
         }
     }
 
-    private void commandEditPodcast() {
+    private void commandEditPodcast() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -211,15 +235,47 @@ public class UI implements Runnable {
         }
     }
 
-    private void commandAddVideo() {
+    private void commandAddVideo() throws IOException {
+        String url;
+        String name;
+        System.out.println("");
+        System.out.println("Url:");
+        url = br.readLine();
+        System.out.println("Name:");
+        name = br.readLine();
+        if (url.isEmpty()){
+            System.out.println("Url cannot be empty");
+        } else {
+            try {
+                if (videoDAO.create(new Video(url, name)) == null) {
+                    System.out.println("\nVideo has already been added in the library");
+                } else {
+                    System.out.println("\nVideo added!");
+                }
+            } catch (SQLException exe) {
+                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+            }
+        }
+    }
+
+    private void commandEditVideo() throws IOException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void commandEditVideo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void commandDeleteVideo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void commandDeleteVideo() throws IOException {
+        System.out.println("Url:");
+        String url = br.readLine();
+        System.out.println("Name:");
+        String name = br.readLine();
+        Video deletable = new Video(url, name);
+        try {
+            if (videoDAO.delete(deletable)) {
+                System.out.println("\nPodcast deleted!");
+            } else {
+                System.out.println("\nNon-existent podcast cannot be deleted");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
