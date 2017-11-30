@@ -149,7 +149,8 @@ public class Database implements AbstractDatabase {
 				"CREATE TABLE IF NOT EXISTS Book" + "(title TEXT NOT NULL," + " author TEXT NOT NULL," + " ISBN TEXT)");
 		list.add("CREATE TABLE IF NOT EXISTS Podcast" + "(name TEXT," + " author TEXT NOT NULL,"
 				+ " title TEXT NOT NULL," + " url TEXT)");
-
+		list.add("CREATE TABLE IF NOT EXISTS Video" + "(URL TEXT NOT NULL," + " title TEXT)");
+		
 		return list;
 	}
 }
