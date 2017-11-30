@@ -155,8 +155,18 @@ public class UI implements Runnable {
         }
     }
     
-    private void editBook(Book book) {
+    private void editBook(Book book) throws IOException {
         System.out.println("Enter new title (leave empty if no need to edit):");
+        String title = br.readLine();
+        if (title.isEmpty()) {
+            title = book.getTitle();
+        }
+        System.out.println("Enter new author (leave empty if no need to edit):");
+        String author = br.readLine();
+        if (author.isEmpty()) {
+            author = book.getAuthor();
+        }
+        
     }
 
     private void commandDeleteBook() throws IOException {
