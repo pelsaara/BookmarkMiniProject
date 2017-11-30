@@ -40,9 +40,14 @@ public class UI implements Runnable {
         while (true) {
             System.out.println("\nTo list all your bookmarks type \"browse\".\n"
             		+ "To add a book type \"add book\".\n"
+                        + "To edit a book type \"edit book\".\n"
             		+ "To delete a book type \"delete book\".\n"
             		+ "To add a podcast type \"add podcast\".\n"
+                        + "To edit a podcast type \"edit podcast\".\n"
             		+ "To delete a podcast type \"delete podcast\".\n"
+                        + "To add a video type \"add video\".\n"
+                        + "To edit a video type \"edit video\".\n"
+            		+ "To delete a video type \"delete video\".\n"
             		+ "To quit the program type \"quit\".\n\n"
             		+ "What to do?\n");
 
@@ -51,22 +56,53 @@ public class UI implements Runnable {
                 command = br.readLine();
                 if (command.equals("quit")) {
                     break;
-                } else if (command.equals("add book")) {
-                	commandAddBook();
                 } else if (command.equals("browse")) {
                 	commandBrowse();
+                } else if (command.equals("add book")) {
+                	commandAddBook();
+                } else if (command.equals("edit book")) {
+                	commandEditBook();
                 } else if (command.equals("delete book")) {
                 	commandDeleteBook();
                 } else if (command.equals("add podcast")) {
                 	commandAddPodcast();
+                } else if (command.equals("edit podcast")) {
+                	commandEditPodcast();
                 } else if (command.equals("delete podcast")) {
                 	commandDeletePodcast();
+                } else if (command.equals("add video")) {
+                	commandAddVideo();
+                } else if (command.equals("edit video")) {
+                	commandEditVideo();
+                } else if (command.equals("delete video")) {
+                	commandDeleteVideo();
                 } else if (command.equals("open video")) {
                         commandOpenVideoURL();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    private void commandBrowse() throws IOException {
+        System.out.println("");
+        try {
+            List<Book> books = bookDAO.findAll();
+            for (Book book : books) {
+                System.out.println(book);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("");
+        try {
+            List<Podcast> podcasts = podcastDAO.findAll();
+            for (Podcast podcast : podcasts) {
+                System.out.println(podcast);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -93,26 +129,9 @@ public class UI implements Runnable {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void commandBrowse() throws IOException {
-        System.out.println("");
-        try {
-            List<Book> books = bookDAO.findAll();
-            for (Book book : books) {
-                System.out.println(book);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println("");
-        try {
-            List<Podcast> podcasts = podcastDAO.findAll();
-            for (Podcast podcast : podcasts) {
-                System.out.println(podcast);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
+    private void commandEditBook() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void commandDeleteBook() throws IOException {
@@ -159,6 +178,10 @@ public class UI implements Runnable {
             }
         }
     }
+
+    private void commandEditPodcast() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     private void commandDeletePodcast() throws IOException {
         System.out.println("Name:");
@@ -186,5 +209,17 @@ public class UI implements Runnable {
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void commandAddVideo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void commandEditVideo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void commandDeleteVideo() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
