@@ -12,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import bookmarkmodels.Book;
 import bookmarkmodels.Podcast;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class UI implements Runnable {
 
@@ -58,6 +61,8 @@ public class UI implements Runnable {
                 	commandAddPodcast();
                 } else if (command.equals("delete podcast")) {
                 	commandDeletePodcast();
+                } else if (command.equals("open video")) {
+                        commandOpenVideoURL();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,6 +176,14 @@ public class UI implements Runnable {
                 System.out.println("\nNon-existent podcast cannot be deleted");
             }
         } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void commandOpenVideoURL() {
+        try {
+            Desktop.getDesktop().browse(new URI("http://www.google.com"));
+        } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
