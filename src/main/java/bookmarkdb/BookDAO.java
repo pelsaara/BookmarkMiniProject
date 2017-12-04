@@ -43,15 +43,16 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
     @Override
     public Book findOne(Book book) throws SQLException {
         Map<String, List<String>> results = database.query("SELECT * FROM Book WHERE author=? AND title=?", book.getAuthor(), book.getTitle());
-        for (int i = 0; i < results.get("title").size(); i++) {
+        
+        if (results.get("title").size() > 0 ) {
             Book found = new Book();
             for (String col : results.keySet()) {
                 if (col.equals("title")) {
-                    found.setTitle(results.get(col).get(i));
+                    found.setTitle(results.get(col).get(0));
                 } else if (col.equals("author")) {
-                    found.setAuthor(results.get(col).get(i));
+                    found.setAuthor(results.get(col).get(0));
                 } else if (col.equals("ISBN")) {
-                    found.setISBN(results.get(col).get(i));
+                    found.setISBN(results.get(col).get(0));
                 }
             }
             return found;
