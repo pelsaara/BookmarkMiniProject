@@ -13,7 +13,8 @@ public class Podcast {
         this.title = title;
         this.url = url;
     }
-    public Podcast(String author, String title) {
+    public Podcast(String name, String author, String title) {
+        this.name = name;
         this.author = author;
         this.title = title;
     }

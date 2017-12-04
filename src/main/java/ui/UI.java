@@ -169,7 +169,16 @@ public class UI implements Runnable {
         if (author.isEmpty()) {
             author = book.getAuthor();
         }
-        
+        System.out.println("Enter new ISBN (leave empty if no need to edit):");
+        String ISBN = br.readLine();
+        if (ISBN.isEmpty()) {
+            ISBN = book.getISBN();
+        }
+        try {
+            bookDAO.update(book, new Book(title, author, ISBN));
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void commandDeleteBook() throws IOException {
@@ -218,7 +227,53 @@ public class UI implements Runnable {
     }
 
     private void commandEditPodcast() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Which podcast do you want to edit?");
+        System.out.println("Name:");
+        String name = br.readLine();
+        System.out.println("Author:");
+        String author = br.readLine();
+        System.out.println("Title:");
+        String title = br.readLine();
+        Podcast toEdit = new Podcast(name, author, title);
+        try {
+            if (name.isEmpty() || title.isEmpty() || author.isEmpty()) {
+                System.out.println("\nEither name, title or author is not valid (cannot be empty)");
+            } else if (podcastDAO.findOne(toEdit) == null) {
+                System.out.println("There is no such podcast in the database.");
+            } else {
+                editPodcast(toEdit);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void editPodcast(Podcast podcast) throws IOException {
+        System.out.println("Enter new name (leave empty if no need to edit):");
+        String name = br.readLine();
+        if (name.isEmpty()) {
+            name = podcast.getName();
+        }
+        System.out.println("Enter new author (leave empty if no need to edit):");
+        String author = br.readLine();
+        if (author.isEmpty()) {
+            author = podcast.getAuthor();
+        }
+        System.out.println("Enter new title (leave empty if no need to edit):");
+        String title = br.readLine();
+        if (title.isEmpty()) {
+            title = podcast.getTitle();
+        }
+        System.out.println("Enter new url (leave empty if no need to edit):");
+        String url = br.readLine();
+        if (url.isEmpty()) {
+            url = podcast.getUrl();
+        }
+        try {
+            podcastDAO.update(podcast, new Podcast(name, author, title, url));
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void commandDeletePodcast() throws IOException {
@@ -228,7 +283,7 @@ public class UI implements Runnable {
         String author = br.readLine();
         System.out.println("Title:");
         String title = br.readLine();
-        Podcast deletable = new Podcast(author, title);
+        Podcast deletable = new Podcast(name, author, title);
         deletable.setName(name);
         try {
             if (podcastDAO.delete(deletable)) {
@@ -273,8 +328,42 @@ public class UI implements Runnable {
     }
 
     private void commandEditVideo() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        System.out.println("Which video do you want to edit?");
+        System.out.println("Title:");
+        String title = br.readLine();
+        System.out.println("Url:");
+        String url = br.readLine();
+        Video toEdit = new Video(title, url);
+        try {
+            if (title.isEmpty() || url.isEmpty()) {
+                System.out.println("\nEither name, title or author is not valid (cannot be empty)");
+            } else if (videoDAO.findOne(toEdit) == null) {
+                System.out.println("There is no such podcast in the database.");
+            } else {
+                editVideo(toEdit);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }  
+
+    private void editVideo(Video video) throws IOException {
+        System.out.println("Enter new title (leave empty if no need to edit):");
+        String title = br.readLine();
+        if (title.isEmpty()) {
+            title = video.getTitle();
+        }
+        System.out.println("Enter new url (leave empty if no need to edit):");
+        String url = br.readLine();
+        if (url.isEmpty()) {
+            url = video.getURL();
+        }
+        try {
+            videoDAO.update(video, new Video(title, url));
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }  
 
     private void commandDeleteVideo() throws IOException {
         System.out.println("Url:");
