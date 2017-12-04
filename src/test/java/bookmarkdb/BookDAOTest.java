@@ -24,69 +24,74 @@ import static org.mockito.ArgumentMatchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public class BookDAOTest {
 
-	private BookDAO bookDAO;
-	private Database database;
-	private Map<String, List<String>> results;
-	private Book newBook;
+    private BookDAO bookDAO;
+    private Database database;
+    private Map<String, List<String>> results;
+    private Book newBook;
 
-	@Before
-	public void setUp() throws Exception {
-		database = mock(Database.class);	
-		bookDAO = new BookDAO(database);
-		results = new HashMap<String, List<String>>();
-		
-		newBook = new Book("Title", "Author", "ISBN");
-		results.put("title", Arrays.asList("Title"));
-		results.put("author", Arrays.asList("Author"));
-		results.put("ISBN", Arrays.asList("ISBN"));
+    @Before
+    public void setUp() throws Exception {
+        database = mock(Database.class);
+        bookDAO = new BookDAO(database);
+        results = new HashMap<String, List<String>>();
 
-                when(database.query(any(String.class))).thenReturn(results);
-                when(database.query(any(String.class), any(String.class), any(String.class))).thenReturn(results);
-        }
+        newBook = new Book("Title", "Author", "ISBN");
+        results.put("title", Arrays.asList("Title"));
+        results.put("author", Arrays.asList("Author"));
+        results.put("ISBN", Arrays.asList("ISBN"));
 
-	@After
-	public void tearDown() throws Exception {
-		database.update("DROP TABLE Book");
-	}
-	
-	@Test
-	public void testCreate() throws SQLException {
-		Book newerBook = new Book("Title2", "Author2", "ISBN2");
+        when(database.query(any(String.class))).thenReturn(results);
+        when(database.query(any(String.class), any(String.class), any(String.class))).thenReturn(results);
+    }
 
-		bookDAO.create(newerBook);
-		
-		verify(database).update(eq("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)"), 
-				eq("Title2"), eq("Author2"), eq("ISBN2"));
-	}
+    @After
+    public void tearDown() throws Exception {
+        database.update("DROP TABLE Book");
+    }
 
-	@Test
-	public void testFindOne() throws SQLException {
-		Book found = bookDAO.findOne(newBook);
-                
-                verify(database).query("SELECT * FROM Book WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
-	}
+    @Test
+    public void testCreate() throws SQLException {
+        Book newerBook = new Book("Title2", "Author2", "ISBN2");
 
-	@Test
-	public void testFindAll() throws SQLException {	
-		bookDAO.findAll();
-		
-		verify(database).query(eq("SELECT * FROM Book"));
-	}
+        bookDAO.create(newerBook);
 
-        @Test
-        public void testDelete() throws SQLException {
-                when(database.update(any(String.class), any(String.class),
-                        any(String.class))).thenReturn(1);
-                
-                boolean deleted = bookDAO.delete(newBook);
-                
-                verify(database).update("DELETE FROM Book WHERE author=? AND title=?",
-                        newBook.getAuthor(), newBook.getTitle());
-                
-                assertTrue(deleted);
-        }
-//	@Test
-//	public void testUpdate() {
-//		fail("Not yet implemented");
-//	}
+        verify(database).update(eq("INSERT INTO Book(title, author, ISBN) VALUES (?, ?, ?)"),
+                eq("Title2"), eq("Author2"), eq("ISBN2"));
+    }
+
+    @Test
+    public void testFindOne() throws SQLException {
+        Book found = bookDAO.findOne(newBook);
+
+        verify(database).query("SELECT * FROM Book WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
+    }
+
+    @Test
+    public void testFindAll() throws SQLException {
+        bookDAO.findAll();
+
+        verify(database).query(eq("SELECT * FROM Book"));
+    }
+
+    @Test
+    public void testDelete() throws SQLException {
+        when(database.update(any(String.class), any(String.class),
+                any(String.class))).thenReturn(1);
+
+        boolean deleted = bookDAO.delete(newBook);
+
+        verify(database).update("DELETE FROM Book WHERE author=? AND title=?",
+                newBook.getAuthor(), newBook.getTitle());
+
+        assertTrue(deleted);
+    }
+
+    @Test
+    public void testUpdate() throws SQLException {
+        Book modifiedBook = new Book("Title2", "Author2", "ISBN2");
+        bookDAO.update(newBook, modifiedBook);
+
+        verify(database).update("UPDATE Book SET title=?, author=?, ISBN=? WHERE author=? AND title=?",
+                modifiedBook.getTitle(), modifiedBook.getAuthor(), modifiedBook.getISBN(), newBook.getAuthor(), newBook.getTitle());
+    }
 }
