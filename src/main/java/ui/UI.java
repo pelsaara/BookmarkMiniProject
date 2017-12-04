@@ -121,14 +121,20 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Title:");
         title = br.readLine();
+        while (title.isEmpty()) {
+            System.out.println("Title cannot be empty. Enter title again:");
+            title = br.readLine();
+        }
         System.out.println("Author:");
         author = br.readLine();
+        while (author.isEmpty()) {
+            System.out.println("Author cannot be empty. Enter author again:");
+            author = br.readLine();
+        }
         System.out.println("ISBN:");
         ISBN = br.readLine();
         try {
-            if (title.isEmpty() || author.isEmpty()) {
-                System.out.println("\nEither title or author is not valid (cannot be empty)");
-            } else if (bookDAO.create(new Book(title, author, ISBN)) == null) {
+            if (bookDAO.create(new Book(title, author, ISBN)) == null) {
                 System.out.println("\nBook has already been added in the library");
             } else {
                 System.out.println("\nBook added!");
@@ -205,25 +211,34 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Name:");
         podName = br.readLine();
+        while (podName.isEmpty()) {
+            System.out.println("Name cannot be empty. Enter name again:");
+            podName = br.readLine();
+        }
         System.out.println("Author:");
         podAuthor = br.readLine();
+        while (podAuthor.isEmpty()) {
+            System.out.println("Author cannot be empty. Enter author again:");
+            podAuthor = br.readLine();
+        }
         System.out.println("Title:");
         podTitle = br.readLine();
+        while (podTitle.isEmpty()) {
+            System.out.println("Title cannot be empty. Enter title again:");
+            podTitle = br.readLine();
+        }
         System.out.println("Url:");
         podUrl = br.readLine();
-        if (podName.isEmpty() || podAuthor.isEmpty() || podTitle.isEmpty()) {
-            System.out.println("Either name, author or title is invalid (all must be non-empty)");
-        } else {
-            try {
-                if (podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl)) == null) {
-                    System.out.println("\nPodcast has already been added in the library");
-                } else {
-                    System.out.println("\nPodcast added!");
-                }
-            } catch (SQLException exe) {
-                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+        try {
+            if (podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl)) == null) {
+                System.out.println("\nPodcast has already been added in the library");
+            } else {
+                System.out.println("\nPodcast added!");
             }
+        } catch (SQLException exe) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
         }
+        
     }
 
     private void commandEditPodcast() throws IOException {
@@ -310,21 +325,26 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Url:");
         url = br.readLine();
+        while (url.isEmpty()) {
+            System.out.println("Url cannot be empty. Enter url again:");
+            url = br.readLine();
+        }
         System.out.println("Name:");
         name = br.readLine();
-        if (url.isEmpty()){
-            System.out.println("Url cannot be empty");
-        } else {
-            try {
-                if (videoDAO.create(new Video(url, name)) == null) {
-                    System.out.println("\nVideo has already been added in the library");
-                } else {
-                    System.out.println("\nVideo added!");
-                }
-            } catch (SQLException exe) {
-                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
-            }
+        while (name.isEmpty()) {
+            System.out.println("Name cannot be empty. Enter name again:");
+            name = br.readLine();
         }
+        try {
+            if (videoDAO.create(new Video(url, name)) == null) {
+                System.out.println("\nVideo has already been added in the library");
+            } else {
+                System.out.println("\nVideo added!");
+            }
+        } catch (SQLException exe) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+        }
+        
     }
 
     private void commandEditVideo() throws IOException {

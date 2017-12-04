@@ -2,34 +2,52 @@ Feature: User can add new book to the database with adequate parameters
 
     Scenario: user can add new book with valid title, author and ISBN
        Given command "add book" is selected
-       When  title "Uusi64646" and author "kirjailija864831" and ISBN "123-456-78912-3-4" are entered
+       When  title "Uusi64646" is entered
+       And   author "kirjailija864831" is entered
+       And   ISBN "123-456-78912-3-4" is entered
        Then  new book is added with title "Uusi64646" and author "kirjailija864831" and ISBN "123-456-78912-3-4"
 
     Scenario: user cannot add new book without title
        Given command "add book" is selected
-       When  title "" and author "kirjailija8646435" and ISBN "64948-646213" are entered
-       Then  book with title "" and author "kirjailija8646435" and ISBN "64948-646213" is not added
+       When  title "" is entered
+       And   title "testi898" is entered
+       And   author "testi565" is entered
+       And   ISBN "123--123--123" is entered
+       Then  title is asked again
 
     Scenario: user cannot add new book without author
        Given command "add book" is selected
-       When  title "kirja156483" and author "" and ISBN "64948-646213" are entered
-       Then  book with title "kirja156483" and author "" and ISBN "64948-646213" is not added
+       When  title "kirja156483" is entered
+       And   author "" is entered
+       And   author "testi" is entered
+       And   ISBN "123--123--123" is entered
+       Then  author is asked again
 
     Scenario: user can add new book without ISBN
        Given command "add book" is selected
-       When  title "Uusi646746" and author "kirjailija8264831" and ISBN "" are entered
+       When  title "Uusi646746" is entered
+       And   author "kirjailija8264831" is entered
+       And   ISBN "" is entered
        Then  new book is added with title "Uusi646746" and author "kirjailija8264831" and ISBN ""
 
     Scenario: user cannot add the same book twice with same author, title and ISBN
        Given command "add book" is selected
-       When  title "Uusi38195" and author "kirjailija02835" and ISBN "111--111--111" are entered
+       When  title "Uusi38195" is entered
+       And   author "kirjailija02835" is entered
+       And   ISBN "111--111--111" is entered
        And   command "add book" is selected
-       And   title "Uusi38195" and author "kirjailija02835" and ISBN "111--111--111" are entered
+       And   title "Uusi38195" is entered
+       And   author "kirjailija02835" is entered
+       And   ISBN "111--111--111" is entered
        Then  only one book is added with title "Uusi38195" and author "kirjailija02835" and ISBN "111--111--111"
 
     Scenario: user cannot add the same book twice with same author and title, and different ISBN
        Given command "add book" is selected
-       When  title "Uusi12345" and author "kirjailija" and ISBN "111--111--111" are entered
+       When  title "Uusi12345" is entered
+       And   author "kirjailija" is entered
+       And   ISBN "111--111--111" is entered
        And   command "add book" is selected
-       And   title "Uusi12345" and author "kirjailija" and ISBN "" are entered
+       And   title "Uusi12345" is entered
+       And   author "kirjailija" is entered
+       And   ISBN "" is entered
        Then  only one book is added with title "Uusi12345" and author "kirjailija"
