@@ -14,7 +14,7 @@ public interface AbstractDAO<T, K> {
 
     List<T> findAll() throws SQLException;
 
-    void update(T... t) throws SQLException;
+    void update(T t, T s) throws SQLException;
 
     boolean delete(T t) throws SQLException;
 }

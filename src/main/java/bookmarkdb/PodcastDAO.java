@@ -38,8 +38,28 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public Podcast findOne(Podcast p) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Podcast findOne(Podcast podcast) throws SQLException {
+        Map<String, List<String>> results = database.query("SELECT * FROM Podcast WHERE author=? AND title=?", podcast.getAuthor(), podcast.getTitle());
+        
+        for (int i = 0; i < results.get("title").size(); i++) {
+            Podcast found = new Podcast();
+            for (String col : results.keySet()) {
+                if (col.equals("name")) {
+                    found.setName(results.get(col).get(i));
+                }
+                if (col.equals("author")) {
+                    found.setAuthor(results.get(col).get(i));
+                }
+                if (col.equals("title")) {
+                    found.setTitle(results.get(col).get(i));
+                }
+                if (col.equals("url")) {
+                    found.setUrl(results.get(col).get(i));
+                }
+            }
+            return found;
+        }
+        return null;
     }
 
     @Override
@@ -66,8 +86,11 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     }
 
     @Override
-    public void update(Podcast... p) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Podcast oldPod, Podcast newPod) throws SQLException {
+        Podcast old = findOne(oldPod);
+        if (old.getAuthor() != null) {
+            database.update("UPDATE Podcast SET name=?, author=?, title=?, url=? WHERE author=? AND title=?", newPod.getName(), newPod.getAuthor(), newPod.getTitle(), newPod.getUrl(), old.getAuthor(), old.getTitle());
+        }
     }
 
     @Override
