@@ -17,6 +17,7 @@ import bookmarkmodels.Video;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class UI implements Runnable {
 
@@ -297,11 +298,57 @@ public class UI implements Runnable {
     }
     
     private void commandOpenVideoURL() {
+        System.out.println("");
         try {
-            desktop.browse(new URI("http://www.google.com"));
-        } catch (IOException | URISyntaxException ex) {
+            List<Video> videos = videoDAO.findAll();
+            for (int i = 0; i < videos.size(); i++) {
+                System.out.println((i + 1) + " " + videos.get(i));
+            }
+            System.out.println("\nWhich video would you like to open?"
+                    + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+            int index = getRowNumber(videos.size());
+
+            if (index == -1) {
+                return;
+            }
+
+            String url = videos.get(index - 1).getURL();
+            url = formatURL(url);
+
+            URI uri = new URI(url);
+            desktop.browse(uri);
+        } catch (SQLException | URISyntaxException | IOException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private int getRowNumber(int maxRowNumber) throws IOException {
+        boolean noRowNumber = true;
+        int index = -1;
+        while (noRowNumber) {
+            try {
+                String input = br.readLine();
+                if (input.equals("cancel")) {
+                    return -1;
+                }
+                index = Integer.parseInt(input);
+                if (index <= 0 || index > maxRowNumber) {
+                    System.out.println("\nThe row number entered was invalid");
+                } else {
+                    noRowNumber = false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nPlease enter a number");
+            }
+        }
+        return index;
+    }
+
+    private String formatURL(String url) {
+        if (url.startsWith("https://") || url.startsWith("http://")) {
+            return url;
+        }
+        return "https://" + url;
     }
 
     private void commandAddVideo() throws IOException {
