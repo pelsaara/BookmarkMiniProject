@@ -41,20 +41,20 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     public Podcast findOne(Podcast podcast) throws SQLException {
         Map<String, List<String>> results = database.query("SELECT * FROM Podcast WHERE author=? AND title=?", podcast.getAuthor(), podcast.getTitle());
         
-        for (int i = 0; i < results.get("title").size(); i++) {
+        if (results.get("title").size() > 0) {
             Podcast found = new Podcast();
             for (String col : results.keySet()) {
                 if (col.equals("name")) {
-                    found.setName(results.get(col).get(i));
+                    found.setName(results.get(col).get(0));
                 }
                 if (col.equals("author")) {
-                    found.setAuthor(results.get(col).get(i));
+                    found.setAuthor(results.get(col).get(0));
                 }
                 if (col.equals("title")) {
-                    found.setTitle(results.get(col).get(i));
+                    found.setTitle(results.get(col).get(0));
                 }
                 if (col.equals("url")) {
-                    found.setUrl(results.get(col).get(i));
+                    found.setUrl(results.get(col).get(0));
                 }
             }
             return found;

@@ -41,6 +41,7 @@ public class BookDAOTest {
 		results.put("ISBN", Arrays.asList("ISBN"));
 
                 when(database.query(any(String.class))).thenReturn(results);
+                when(database.query(any(String.class), any(String.class), any(String.class))).thenReturn(results);
         }
 
 	@After
@@ -58,10 +59,12 @@ public class BookDAOTest {
 				eq("Title2"), eq("Author2"), eq("ISBN2"));
 	}
 
-//	@Test
-//	public void testFindOne() {
-//		//fail("Not yet implemented");
-//	}
+	@Test
+	public void testFindOne() throws SQLException {
+		Book found = bookDAO.findOne(newBook);
+                
+                verify(database).query("SELECT * FROM Book WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
+	}
 
 	@Test
 	public void testFindAll() throws SQLException {	
