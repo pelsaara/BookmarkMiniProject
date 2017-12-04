@@ -9,6 +9,7 @@ import bookmarkdb.BookDAO;
 import bookmarkdb.Connector;
 import bookmarkdb.Database;
 import bookmarkdb.PodcastDAO;
+import bookmarkdb.VideoDAO;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -23,6 +24,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 import bookmarkmodels.Book;
 import bookmarkmodels.Podcast;
+import bookmarkmodels.Video;
+
 import java.awt.Desktop;
 import java.net.URI;
 import static org.mockito.Mockito.mock;
@@ -36,6 +39,7 @@ public class Stepdefs {
     BufferedReader buffer;
     BookDAO bookDao;
     PodcastDAO podcastDao;
+    VideoDAO videoDao;
     ByteArrayInputStream inputStream;
     ByteArrayOutputStream outputStream;
     PrintStream standardOut;
@@ -61,6 +65,7 @@ public class Stepdefs {
         database.init();
         bookDao = new BookDAO(database);
         podcastDao = new PodcastDAO(database);
+        videoDao = new VideoDAO(database);
         desktop = mock(Desktop.class);
     }
 
@@ -116,6 +121,12 @@ public class Stepdefs {
     public void url_is_entered(String url) {
         addInputLine(url);
     }
+    
+    @When("^URL \"([^\"]*)\" and title \"([^\"]*)\" are entered$")
+    public void url_and_title_are_entered(String url, String title) {
+        addInputLine(url);
+        addInputLine(title);
+    }
 
     @Then("^new book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
     public void new_book_is_added(String title, String author, String ISBN) throws Throwable {
@@ -145,6 +156,21 @@ public class Stepdefs {
         
         String output = outputStream.toString();
         assertTrue(output.contains("Podcast added!"));
+    }
+    
+    @Then("^new video is added with URL \"([^\"]*)\" and title \"([^\"]*)\"")
+    public void new_video_is_added(String url, String title) throws Throwable {
+        Video addedVideo = new Video(url, title);
+
+        runApplication();
+
+        List<Video> allVideos = videoDao.findAll();
+
+        assertEquals(allVideos.size(), 1);
+        assertEquals(allVideos.get(0), addedVideo);
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Video added!"));
     }
     
     @Then("^only one book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
@@ -209,6 +235,21 @@ public class Stepdefs {
         assertTrue(output.contains("Book added!"));
         assertTrue(output.contains("Book has already been added in the library"));
     }
+    
+    @Then("^only one video is added with URL \"([^\"]*)\" and title \"([^\"]*)\"$")
+    public void only_one_video_is_added_with_URL_and_title(String URL, String title) throws Throwable {
+        runApplication();
+
+        List<Video> allVideos = videoDao.findAll();
+
+        assertEquals(allVideos.size(), 1);
+        assertEquals(allVideos.get(0).getURL(), URL);
+        assertEquals(allVideos.get(0).getTitle(), title);
+        String output = outputStream.toString();
+        
+        assertTrue(output.contains("Video added!"));
+        assertTrue(output.contains("Video has already been added in the library"));
+    }
 
     @Then("^book with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" is not added$")
     public void book_without_title_or_author_is_not_added(String title, String author, String ISBN) throws Throwable {
@@ -232,6 +273,18 @@ public class Stepdefs {
 
         String output = outputStream.toString();
         assertTrue(output.contains("Either name, author or title is invalid (all must be non-empty)"));
+    }
+    
+    @Then("^video with URL \"([^\"]*)\" and title \"([^\"]*)\" is not added$")
+    public void video_without_URL_is_not_added(String URL, String title) throws Throwable {
+        Video notAddedVideo = new Video(URL, title);
+        runApplication();
+
+        List<Video> allVideos = videoDao.findAll();
+        assertFalse(allVideos.contains(notAddedVideo));
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Url cannot be empty"));
     }
     
     @Then("^empty list of books is printed$")

@@ -72,7 +72,7 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 	}
 
 	@Override
-	public void update(Video... b) throws SQLException {
+	public void update(Video b, Video c) throws SQLException {
 		throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
 																		// Tools | Templates.
 	}
