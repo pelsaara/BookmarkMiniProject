@@ -174,7 +174,7 @@ public class UI implements Runnable {
 
     private void commandEditBook() throws IOException {
         List<Book> books = browseBooks();
-        System.out.println("Which book do you want to edit?"
+        System.out.println("\nWhich book do you want to edit?"
                 + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
         int index = getRowNumber(books.size());
 
@@ -265,7 +265,7 @@ public class UI implements Runnable {
 
     private void commandEditPodcast() throws IOException {
         List<Podcast> podcasts = browsePodcasts();
-        System.out.println("Which podcast do you want to edit?"
+        System.out.println("\nWhich podcast do you want to edit?"
                 + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
         int index = getRowNumber(podcasts.size());
 
@@ -406,7 +406,7 @@ public class UI implements Runnable {
 
     private void commandEditVideo() throws IOException {
         List<Video> videos = browseVideos();
-        System.out.println("Which video do you want to edit?"
+        System.out.println("\nWhich video do you want to edit?"
                 + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
         int index = getRowNumber(videos.size());
 
