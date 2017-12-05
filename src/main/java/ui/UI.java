@@ -382,15 +382,11 @@ public class UI implements Runnable {
         System.out.println("Url:");
         url = br.readLine();
         while (url.isEmpty()) {
-            System.out.println("Url cannot be empty. Enter url again:");
+            System.out.println("Url cannot be empty. Enter URL again:");
             url = br.readLine();
         }
         System.out.println("Name:");
         name = br.readLine();
-        while (name.isEmpty()) {
-            System.out.println("Name cannot be empty. Enter name again:");
-            name = br.readLine();
-        }
         try {
             if (videoDAO.create(new Video(url, name)) == null) {
                 System.out.println("\nVideo has already been added in the library");

@@ -16,8 +16,8 @@ public class Video {
     	this.title = title;
     }
 
-    public Video(String title) {
-        this.title = title;
+    public Video(String URL) {
+        this.URL = URL;
     }
 
     public Video() {

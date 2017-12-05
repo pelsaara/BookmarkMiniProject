@@ -109,7 +109,7 @@ public class Stepdefs {
         addInputLine(title);
         
     }
-    @Given ("^video with name \"([^\"]*)\" and url \"([^\"]*)\" has been added$")
+    @Given ("^video with name \"([^\"]*)\" and URL \"([^\"]*)\" has been added$")
     public void video_has_been_added(String name, String url) throws Throwable {
         addInputLine("add video");
         addInputLine(url);
@@ -131,8 +131,8 @@ public class Stepdefs {
     	addInputLine(name);
     }
 
-    @When("^url \"([^\"]*)\" is entered$")
-    public void url_is_entered(String url) {
+    @When("^URL \"([^\"]*)\" is entered$")
+    public void URL_is_entered(String url) {
         addInputLine(url);
     }
     
@@ -160,12 +160,12 @@ public class Stepdefs {
         assertTrue(output.contains("Enter name again"));
     }
     
-    @Then("^url is asked again$")
-    public void url_is_asked_again() throws Throwable {
+    @Then("^URL is asked again$")
+    public void URL_is_asked_again() throws Throwable {
         runApplication();
         
         String output = outputStream.toString();
-        assertTrue(output.contains("Enter url again"));
+        assertTrue(output.contains("Enter URL again"));
     }
 
     @When("^row number \"([^\"]*)\" is entered$")
@@ -334,7 +334,7 @@ public class Stepdefs {
         assertFalse(allVideos.contains(notAddedVideo));
 
         String output = outputStream.toString();
-        assertTrue(output.contains("Url cannot be empty"));
+        assertTrue(output.contains("URL cannot be empty"));
     }
     
     @Then("^empty list of books is printed$")
@@ -411,8 +411,8 @@ public class Stepdefs {
         assertTrue(output.contains("Non-existent podcast cannot be deleted"));
     }
 
-    @Then("^url \"([^\"]*)\" is opened in browser$")
-    public void url_is_opened_in_browser(String url) throws Throwable {
+    @Then("^URL \"([^\"]*)\" is opened in browser$")
+    public void URL_is_opened_in_browser(String url) throws Throwable {
 
         runApplication();
 
@@ -421,8 +421,8 @@ public class Stepdefs {
         verify(desktop).browse(new URI(url));
     }
 
-    @Then("^no url is opened in browser$")
-    public void no_url_is_opened_in_browser() throws IOException {
+    @Then("^no URL is opened in browser$")
+    public void no_URL_is_opened_in_browser() throws IOException {
 
         runApplication();
 
