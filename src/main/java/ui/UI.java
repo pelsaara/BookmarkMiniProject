@@ -427,7 +427,7 @@ public class UI implements Runnable {
             url = video.getURL();
         }
         try {
-            videoDAO.update(video, new Video(title, url));
+            videoDAO.update(video, new Video(url, title));
         } catch (SQLException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
