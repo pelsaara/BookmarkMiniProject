@@ -39,3 +39,10 @@ Feature: User can delete a book from database
        And   command "delete video" is selected
        When  row number "1" is entered
        Then  video with URL "www.testi1234.fi" and name "testi1234" is deleted
+
+    Scenario: user cannot delete a nonexistent video
+       Given video with URL "www.testi5678.com" and name "testi5678" has been added
+       And   command "delete video" is selected
+       When  row number "3" is entered
+       And   row number "cancel" is entered
+       Then  user is notified the entered row number is invalid
