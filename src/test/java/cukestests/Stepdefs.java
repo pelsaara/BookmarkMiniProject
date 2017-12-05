@@ -456,6 +456,14 @@ public class Stepdefs {
         String output = outputStream.toString();
         assertTrue(output.contains("Please enter a number"));
     }
+    
+    @Then("^video with title \"([^\"]*)\" and URL \"([^\"]*)\" is printed$")
+    public void video_with_title_and_url_is_printed(String title, String url) {
+        runApplication();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains(title) && output.contains(url));
+    }
 
     /**
      * Adds a line to the input, which simulates same behaviour as typing text
