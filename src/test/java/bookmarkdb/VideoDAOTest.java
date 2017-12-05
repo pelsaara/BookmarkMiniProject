@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import bookmarkmodels.Book;
 import bookmarkmodels.Video;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,6 +41,7 @@ public class VideoDAOTest {
 		results.put("title", Arrays.asList("Title"));
 
 		when(database.query(any(String.class))).thenReturn(results);
+        when(database.query(any(String.class), any(String.class), any(String.class))).thenReturn(results);
 	}
 
 	@After
@@ -57,10 +59,13 @@ public class VideoDAOTest {
 				eq("Title2"));
 	}
 
-	// @Test
-	// public void testFindOne() {
-	// //fail("Not yet implemented");
-	// }
+	 @Test
+	 public void testFindOne() throws SQLException {
+			Video found = videoDAO.findOne(newVideo);
+            
+            verify(database).query(eq("SELECT * FROM Video WHERE URL=? AND title=?"), eq(found.getURL()), eq(found.getTitle()));
+
+	 }
 
 	@Test
 	public void testFindAll() throws SQLException {

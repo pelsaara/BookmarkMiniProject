@@ -63,7 +63,7 @@ public class BookDAOTest {
 	public void testFindOne() throws SQLException {
 		Book found = bookDAO.findOne(newBook);
                 
-                verify(database).query("SELECT * FROM Book WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
+        verify(database).query("SELECT * FROM Book WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
 	}
 
 	@Test
