@@ -33,3 +33,9 @@ Feature: User can delete a book from database
        And   title "Podcast" is entered
        And   URL "https://www.podcastsaresogreat.com" is entered
        Then  no podcasts are deleted
+
+    Scenario: user can delete an added video
+       Given video with URL "www.testi1234.fi" and name "testi1234" has been added
+       And   command "delete video" is selected
+       When  row number "1" is entered
+       Then  video with URL "www.testi1234.fi" and name "testi1234" is deleted

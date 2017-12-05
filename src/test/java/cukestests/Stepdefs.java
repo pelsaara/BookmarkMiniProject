@@ -107,10 +107,10 @@ public class Stepdefs {
     @When("^title \"([^\"]*)\" is entered$")
     public void title_is_entered(String title) throws Throwable {
         addInputLine(title);
-        
     }
-    @Given ("^video with name \"([^\"]*)\" and URL \"([^\"]*)\" has been added$")
-    public void video_has_been_added(String name, String url) throws Throwable {
+    
+    @Given ("^video with URL \"([^\"]*)\" and name \"([^\"]*)\" has been added$")
+    public void video_has_been_added(String url, String name) throws Throwable {
         addInputLine("add video");
         addInputLine(url);
         addInputLine(name);
@@ -380,11 +380,19 @@ public class Stepdefs {
     }
 
     @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is deleted$")
-    public void added_podcast_is_deleted(String name, String author, String title, String ISBN) throws Throwable {
+    public void added_podcast_is_deleted(String name, String author, String title, String URL) throws Throwable {
         runApplication();
 
         String output = outputStream.toString();
         assertTrue(output.contains("Podcast deleted!"));
+    }
+    
+    @Then("^video with URL \"([^\"]*)\" and name \"([^\"]*)\" is deleted$")
+    public void added_video_is_deleted(String URL, String name) throws Throwable {
+        runApplication();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Video deleted!"));
     }
     
     @Then("^no books are deleted$")
