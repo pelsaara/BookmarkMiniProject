@@ -28,7 +28,9 @@ import bookmarkmodels.Video;
 
 import java.awt.Desktop;
 import java.net.URI;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import ui.UI;
 
@@ -102,19 +104,31 @@ public class Stepdefs {
         addInputLine(ISBN);
     }
 
-    @When("^title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\" are entered$")
-    public void title_and_author_and_ISBN_are_entered(String title, String author, String ISBN) throws Throwable {
+    @When("^title \"([^\"]*)\" is entered$")
+    public void title_is_entered(String title) throws Throwable {
         addInputLine(title);
+        
+    }
+    @Given ("^video with name \"([^\"]*)\" and url \"([^\"]*)\" has been added$")
+    public void video_has_been_added(String name, String url) throws Throwable {
+        addInputLine("add video");
+        addInputLine(url);
+        addInputLine(name);
+    }
+    
+    @When("^author \"([^\"]*)\" is entered$")
+    public void author_is_entered(String author) throws Throwable {
         addInputLine(author);
+    }
+    
+    @When("^ISBN \"([^\"]*)\" is entered$")
+    public void ISBN_is_entered(String ISBN) throws Throwable {
         addInputLine(ISBN);
     }
     
-    @When("^name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" are entered$")
-    public void name_and_title_and_author_and_URL_are_entered(String name, String author, String title, String URL) throws Throwable {
+    @When("^name \"([^\"]*)\" is entered$")
+    public void name_is_entered(String name) throws Throwable {
     	addInputLine(name);
-    	addInputLine(author);
-    	addInputLine(title);
-        addInputLine(URL);
     }
 
     @When("^url \"([^\"]*)\" is entered$")
@@ -122,10 +136,46 @@ public class Stepdefs {
         addInputLine(url);
     }
     
-    @When("^URL \"([^\"]*)\" and title \"([^\"]*)\" are entered$")
-    public void url_and_title_are_entered(String url, String title) {
-        addInputLine(url);
-        addInputLine(title);
+    @Then("^title is asked again$")
+    public void title_is_asked_again() throws Throwable {
+        runApplication();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Enter title again"));
+    }
+    
+    @Then("^author is asked again$")
+    public void author_is_asked_again() throws Throwable {
+        runApplication();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Enter author again"));
+    }
+    
+    @Then("^name is asked again$")
+    public void name_is_asked_again() throws Throwable {
+        runApplication();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Enter name again"));
+    }
+    
+    @Then("^url is asked again$")
+    public void url_is_asked_again() throws Throwable {
+        runApplication();
+        
+        String output = outputStream.toString();
+        assertTrue(output.contains("Enter url again"));
+    }
+
+    @When("^row number \"([^\"]*)\" is entered$")
+    public void row_number_is_entered(String row) {
+        addInputLine(row);
+    }
+
+    @When("^user enters \"([^\"]*)\"$")
+    public void user_enters(String input) {
+        addInputLine(input);
     }
 
     @Then("^new book is added with title \"([^\"]*)\" and author \"([^\"]*)\" and ISBN \"([^\"]*)\"$")
@@ -366,7 +416,37 @@ public class Stepdefs {
 
         runApplication();
 
+        String output = outputStream.toString();
+        assertTrue(output.contains("Which video would you like to open?"));
         verify(desktop).browse(new URI(url));
+    }
+
+    @Then("^no url is opened in browser$")
+    public void no_url_is_opened_in_browser() throws IOException {
+
+        runApplication();
+
+        verify(desktop, times(0)).browse(any(URI.class));
+    }
+
+    @Then("^user is notified the entered row number is invalid$")
+    public void user_notified_of_invalid_row_number() {
+        addInputLine("cancel");
+
+        runApplication();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("The row number entered was invalid"));
+    }
+
+    @Then("^user is prompted for a number$")
+    public void user_is_prompted_for_a_number() {
+        addInputLine("cancel");
+
+        runApplication();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains("Please enter a number"));
     }
 
     /**

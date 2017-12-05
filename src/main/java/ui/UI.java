@@ -17,6 +17,7 @@ import bookmarkmodels.Video;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class UI implements Runnable {
 
@@ -94,26 +95,53 @@ public class UI implements Runnable {
     }
     
     private void commandBrowse() throws IOException {
+        browseBooks();
+        browsePodcasts();
+        browseVideos();
+    }
+
+    private List<Book> browseBooks() {
         System.out.println("");
         try {
             List<Book> books = bookDAO.findAll();
-            for (Book book : books) {
-                System.out.println(book);
+            for (int i = 0; i < books.size(); i++) {
+                System.out.println((i + 1) + " " + books.get(i));
             }
+            return books;
         } catch (SQLException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
+    }
+
+    private List<Podcast> browsePodcasts() {
         System.out.println("");
         try {
             List<Podcast> podcasts = podcastDAO.findAll();
-            for (Podcast podcast : podcasts) {
-                System.out.println(podcast);
+            for (int i = 0; i < podcasts.size(); i++) {
+                System.out.println((i + 1) + " " + podcasts.get(i));
             }
+            return podcasts;
         } catch (SQLException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
-    
+
+    private List<Video> browseVideos() {
+        System.out.println("");
+        try {
+            List<Video> videos = videoDAO.findAll();
+            for (int i = 0; i < videos.size(); i++) {
+                System.out.println((i + 1) + " " + videos.get(i));
+            }
+            return videos;
+        } catch (SQLException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     private void commandAddBook() throws IOException {
         String author;
         String title;
@@ -121,14 +149,20 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Title:");
         title = br.readLine();
+        while (title.isEmpty()) {
+            System.out.println("Title cannot be empty. Enter title again:");
+            title = br.readLine();
+        }
         System.out.println("Author:");
         author = br.readLine();
+        while (author.isEmpty()) {
+            System.out.println("Author cannot be empty. Enter author again:");
+            author = br.readLine();
+        }
         System.out.println("ISBN:");
         ISBN = br.readLine();
         try {
-            if (title.isEmpty() || author.isEmpty()) {
-                System.out.println("\nEither title or author is not valid (cannot be empty)");
-            } else if (bookDAO.create(new Book(title, author, ISBN)) == null) {
+            if (bookDAO.create(new Book(title, author, ISBN)) == null) {
                 System.out.println("\nBook has already been added in the library");
             } else {
                 System.out.println("\nBook added!");
@@ -139,23 +173,17 @@ public class UI implements Runnable {
     }
 
     private void commandEditBook() throws IOException {
-        System.out.println("Which book do you want to edit?");
-        System.out.println("Title:");
-        String title = br.readLine();
-        System.out.println("Author");
-        String author = br.readLine();
-        Book toEdit = new Book(title, author);
-        try {
-            if (title.isEmpty() || author.isEmpty()) {
-                System.out.println("\nEither title or author is not valid (cannot be empty)");
-            } else if (bookDAO.findOne(toEdit) == null) {
-                System.out.println("There is no such book in the database.");
-            } else {
-                editBook(toEdit);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        List<Book> books = browseBooks();
+        System.out.println("Which book do you want to edit?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(books.size());
+
+        if (index == -1) {
+            return;
         }
+
+        Book toEdit = books.get(index - 1);
+        editBook(toEdit);
     }
     
     private void editBook(Book book) throws IOException {
@@ -205,47 +233,48 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Name:");
         podName = br.readLine();
+        while (podName.isEmpty()) {
+            System.out.println("Name cannot be empty. Enter name again:");
+            podName = br.readLine();
+        }
         System.out.println("Author:");
         podAuthor = br.readLine();
+        while (podAuthor.isEmpty()) {
+            System.out.println("Author cannot be empty. Enter author again:");
+            podAuthor = br.readLine();
+        }
         System.out.println("Title:");
         podTitle = br.readLine();
+        while (podTitle.isEmpty()) {
+            System.out.println("Title cannot be empty. Enter title again:");
+            podTitle = br.readLine();
+        }
         System.out.println("Url:");
         podUrl = br.readLine();
-        if (podName.isEmpty() || podAuthor.isEmpty() || podTitle.isEmpty()) {
-            System.out.println("Either name, author or title is invalid (all must be non-empty)");
-        } else {
-            try {
-                if (podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl)) == null) {
-                    System.out.println("\nPodcast has already been added in the library");
-                } else {
-                    System.out.println("\nPodcast added!");
-                }
-            } catch (SQLException exe) {
-                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+        try {
+            if (podcastDAO.create(new Podcast(podName, podAuthor, podTitle, podUrl)) == null) {
+                System.out.println("\nPodcast has already been added in the library");
+            } else {
+                System.out.println("\nPodcast added!");
             }
+        } catch (SQLException exe) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
         }
+        
     }
 
     private void commandEditPodcast() throws IOException {
-        System.out.println("Which podcast do you want to edit?");
-        System.out.println("Name:");
-        String name = br.readLine();
-        System.out.println("Author:");
-        String author = br.readLine();
-        System.out.println("Title:");
-        String title = br.readLine();
-        Podcast toEdit = new Podcast(name, author, title);
-        try {
-            if (name.isEmpty() || title.isEmpty() || author.isEmpty()) {
-                System.out.println("\nEither name, title or author is not valid (cannot be empty)");
-            } else if (podcastDAO.findOne(toEdit) == null) {
-                System.out.println("There is no such podcast in the database.");
-            } else {
-                editPodcast(toEdit);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        List<Podcast> podcasts = browsePodcasts();
+        System.out.println("Which podcast do you want to edit?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(podcasts.size());
+
+        if (index == -1) {
+            return;
         }
+
+        Podcast toEdit = podcasts.get(index - 1);
+        editPodcast(toEdit);
     }
 
     private void editPodcast(Podcast podcast) throws IOException {
@@ -297,11 +326,54 @@ public class UI implements Runnable {
     }
     
     private void commandOpenVideoURL() {
+        System.out.println("");
         try {
-            desktop.browse(new URI("http://www.google.com"));
-        } catch (IOException | URISyntaxException ex) {
+            List<Video> videos = browseVideos();
+            System.out.println("\nWhich video would you like to open?"
+                    + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+            int index = getRowNumber(videos.size());
+
+            if (index == -1) {
+                return;
+            }
+
+            String url = videos.get(index - 1).getURL();
+            url = formatURL(url);
+
+            URI uri = new URI(url);
+            desktop.browse(uri);
+        } catch (URISyntaxException | IOException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private int getRowNumber(int maxRowNumber) throws IOException {
+        boolean noRowNumber = true;
+        int index = -1;
+        while (noRowNumber) {
+            try {
+                String input = br.readLine();
+                if (input.equals("cancel")) {
+                    return -1;
+                }
+                index = Integer.parseInt(input);
+                if (index <= 0 || index > maxRowNumber) {
+                    System.out.println("\nThe row number entered was invalid");
+                } else {
+                    noRowNumber = false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("\nPlease enter a number");
+            }
+        }
+        return index;
+    }
+
+    private String formatURL(String url) {
+        if (url.startsWith("https://") || url.startsWith("http://")) {
+            return url;
+        }
+        return "https://" + url;
     }
 
     private void commandAddVideo() throws IOException {
@@ -310,41 +382,40 @@ public class UI implements Runnable {
         System.out.println("");
         System.out.println("Url:");
         url = br.readLine();
+        while (url.isEmpty()) {
+            System.out.println("Url cannot be empty. Enter url again:");
+            url = br.readLine();
+        }
         System.out.println("Name:");
         name = br.readLine();
-        if (url.isEmpty()){
-            System.out.println("Url cannot be empty");
-        } else {
-            try {
-                if (videoDAO.create(new Video(url, name)) == null) {
-                    System.out.println("\nVideo has already been added in the library");
-                } else {
-                    System.out.println("\nVideo added!");
-                }
-            } catch (SQLException exe) {
-                Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
-            }
+        while (name.isEmpty()) {
+            System.out.println("Name cannot be empty. Enter name again:");
+            name = br.readLine();
         }
+        try {
+            if (videoDAO.create(new Video(url, name)) == null) {
+                System.out.println("\nVideo has already been added in the library");
+            } else {
+                System.out.println("\nVideo added!");
+            }
+        } catch (SQLException exe) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, exe);
+        }
+        
     }
 
     private void commandEditVideo() throws IOException {
-        System.out.println("Which video do you want to edit?");
-        System.out.println("Title:");
-        String title = br.readLine();
-        System.out.println("Url:");
-        String url = br.readLine();
-        Video toEdit = new Video(title, url);
-        try {
-            if (title.isEmpty() || url.isEmpty()) {
-                System.out.println("\nEither name, title or author is not valid (cannot be empty)");
-            } else if (videoDAO.findOne(toEdit) == null) {
-                System.out.println("There is no such podcast in the database.");
-            } else {
-                editVideo(toEdit);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
+        List<Video> videos = browseVideos();
+        System.out.println("Which video do you want to edit?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(videos.size());
+
+        if (index == -1) {
+            return;
         }
+
+        Video toEdit = videos.get(index - 1);
+        editVideo(toEdit);
     }  
 
     private void editVideo(Video video) throws IOException {

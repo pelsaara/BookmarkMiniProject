@@ -39,6 +39,7 @@ public class PodcastDAOTest {
         results.put("url", Arrays.asList("Url"));
 
         when(database.query("SELECT * FROM Podcast")).thenReturn(results);
+        when(database.query(any(String.class), any(String.class), any(String.class))).thenReturn(results);
     }
 
     @After
@@ -60,10 +61,13 @@ public class PodcastDAOTest {
 
     
 
-//    @Test
-//    public void testFindOne() {
-//        
-//    }
+    @Test
+    public void testFindOne() throws SQLException {
+        Podcast found = podDAO.findOne(newPodcast);
+        
+        verify(database).query("SELECT * FROM Podcast WHERE author=? AND title=?", found.getAuthor(), found.getTitle());
+        
+    }
     @Test
     public void testFindAll() throws SQLException {        
         podDAO.findAll();
