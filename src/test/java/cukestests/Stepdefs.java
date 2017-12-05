@@ -28,6 +28,7 @@ import bookmarkmodels.Video;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.sql.SQLException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -463,6 +464,42 @@ public class Stepdefs {
         
         String output = outputStream.toString();
         assertTrue(output.contains(title) && output.contains(url));
+    }
+
+    @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is displayed$")
+    public void podcast_is_displayed(String name, String author, String title, String url) {
+        addInputLine("cancel");
+        Podcast podcast = new Podcast(name, author, title, url);
+
+        runApplication();
+
+        String output = outputStream.toString();
+        assertTrue(output.contains(podcast.toString()));
+    }
+
+    @Then("^edit command is cancelled and main menu displayed$")
+    public void edit_command_is_cancelled() throws Throwable {
+
+        runApplication();
+
+        String output = outputStream.toString();
+        assertFalse(output.contains("Enter new "));
+    }
+
+    @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is not in the library$")
+    public void podcast_is_not_in_library(String name, String author, String title, String url) throws Throwable {
+        Podcast podToTest = new Podcast(name, author, title, url);
+        runApplication();
+
+        assertFalse(podToTest.equals(podcastDao.findOne(podToTest)));
+    }
+
+    @Then("^podcast with name \"([^\"]*)\" and author \"([^\"]*)\" and title \"([^\"]*)\" and URL \"([^\"]*)\" is in the library$")
+    public void podcast_is_in_library(String name, String author, String title, String url) throws Throwable {
+        Podcast podToTest = new Podcast(name, author, title, url);
+        runApplication();
+
+        assertTrue(podToTest.equals(podcastDao.findOne(podToTest)));
     }
 
     /**
