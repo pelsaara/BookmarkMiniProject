@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import bookmarkmodels.Book;
 import bookmarkmodels.Video;
 
 /**
@@ -46,9 +47,22 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 	}
 
 	@Override
-	public Video findOne(Video b) throws SQLException {
-		throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-																		// Tools | Templates.
+	public Video findOne(Video video) throws SQLException {
+		Map<String, List<String>> results = database.query("SELECT * FROM Video WHERE URL=? AND title=?",
+				video.getURL(), video.getTitle());
+
+		if (results.get("URL").size() > 0) {
+			Video found = new Video();
+			for (String col : results.keySet()) {
+				if (col.equals("URL")) {
+					found.setURL(results.get(col).get(0));
+				} else if (col.equals("title")) {
+					found.setTitle(results.get(col).get(0));
+				}
+			}
+			return found;
+		}
+		return null;
 	}
 
 	@Override
@@ -72,9 +86,11 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 	}
 
 	@Override
-	public void update(Video b, Video c) throws SQLException {
-		throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
-																		// Tools | Templates.
+	public void update(Video oldVideo, Video newVideo) throws SQLException {
+		if (oldVideo.getURL() != null) {
+			database.update("UPDATE Video SET URL=?, title=? WHERE URL=? AND title=?", newVideo.getURL(),
+					newVideo.getTitle(), oldVideo.getURL(), oldVideo.getTitle());
+		}
 	}
 
 	@Override
