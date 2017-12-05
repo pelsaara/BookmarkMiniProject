@@ -6,3 +6,5 @@ bin/
 
 .*
 !/.gitignore
+*/*~
+bookmarks.db

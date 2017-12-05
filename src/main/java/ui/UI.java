@@ -57,6 +57,7 @@ public class UI implements Runnable {
                         + "To add a video type \"add video\".\n"
                         + "To edit a video type \"edit video\".\n"
             		+ "To delete a video type \"delete video\".\n"
+                        + "To open a video type \"open video\".\n"
             		+ "To quit the program type \"quit\".\n\n"
             		+ "What to do?\n");
 
