@@ -434,11 +434,20 @@ public class UI implements Runnable {
     }  
 
     private void commandDeleteVideo() throws IOException {
-        System.out.println("Url:");
-        String url = br.readLine();
-        Video deletable = new Video(url);
+        List<Video> videos = browseVideos();
+        System.out.println("\nWhich video do you want to delete?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(videos.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Video toDelete = videos.get(index - 1);
+        
+        
         try {
-            if (videoDAO.delete(deletable)) {
+            if (videoDAO.delete(toDelete)) {
                 System.out.println("\nVideo deleted!");
             } else {
                 System.out.println("\nNon-existent video cannot be deleted");

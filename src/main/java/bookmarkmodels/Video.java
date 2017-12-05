@@ -41,7 +41,7 @@ public class Video {
 
     @Override
     public String toString() {
-        return "Video: "  + "URL: " + URL + "title: " + title;
+        return "Video: "  + "URL: " + URL + ", title: " + title;
     }
     
     @Override
