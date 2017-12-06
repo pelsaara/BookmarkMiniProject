@@ -23,7 +23,7 @@ Yleisesti:
 
 ## Asennusohjeet
 
-1. Lataa jar-tiedosto Releases välilehdeltä
+1. Lataa jar-tiedosto Releases välilehdeltä. Voit halutessasi myös ladata testidataa sisältävän bookmarks.db-tiedoston
 2. Navigoi komentorivillä kansioon, jossa ladattu tiedosto sijaitsee
 3. Aja sovellus komennolla "java -jar BookmarkMiniProject-all.jar"
 
