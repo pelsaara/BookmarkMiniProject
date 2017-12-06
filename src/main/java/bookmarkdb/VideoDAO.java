@@ -84,7 +84,7 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 
 		return videos;
 	}
-
+	
 	@Override
 	public void update(Video oldVideo, Video newVideo) throws SQLException {
 		if (oldVideo.getURL() != null) {
