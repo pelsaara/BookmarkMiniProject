@@ -100,4 +100,30 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
                         podcast.getAuthor(), podcast.getTitle(), podcast.getName());
         return deleted == 1;
     }
+
+    @Override
+    public List<Podcast> findAllWithKeyword(String s) throws SQLException {
+        List<Podcast> podcasts = new ArrayList<>();
+        String keyword = "\'%" + s + "\'%";
+        Map<String, List<String>> results = database.query("SELECT * FROM Podcast"
+                + " WHERE author LIKE ? OR title LIKE ? OR name LIKE ? OR url LIKE ?"
+                , keyword, keyword, keyword, keyword);
+        
+        for (int i = 0; i < results.get("title").size(); i++) {
+            Podcast podcast = new Podcast();
+            for (String col : results.keySet()) {
+                if (col.equals("name")) {
+                    podcast.setName(results.get(col).get(i));
+                } else if (col.equals("author")) {
+                    podcast.setAuthor(results.get(col).get(i));
+                } else if (col.equals("title")) {
+                    podcast.setTitle(results.get(col).get(i));
+                } else if (col.equals("url")) {
+                    podcast.setUrl(results.get(col).get(i));
+                }
+            }
+            podcasts.add(podcast);
+        }
+        return podcasts;
+    }
 }
