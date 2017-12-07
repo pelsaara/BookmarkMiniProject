@@ -34,7 +34,7 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 
         List<Video> allVideos = this.findAll();
         for (Video existingVideo : allVideos) {
-            if (video.getURL().equals(existingVideo.getURL())) {
+            if (video.getURL().equalsIgnoreCase(existingVideo.getURL())) {
                 return null;
             }
         }
@@ -52,10 +52,12 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
         if (results.get("URL").size() > 0) {
             Video found = new Video();
             for (String col : results.keySet()) {
-                if (col.equals("URL")) {
+                if (col.equalsIgnoreCase("URL")) {
                     found.setURL(results.get(col).get(0));
-                } else if (col.equals("title")) {
+                } else if (col.equalsIgnoreCase("title")) {
                     found.setTitle(results.get(col).get(0));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    found.setChecked(Integer.parseInt(results.get(col).get(0)));
                 }
             }
             return found;
@@ -71,10 +73,12 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
         for (int i = 0; i < results.get("URL").size(); i++) {
             Video video = new Video();
             for (String col : results.keySet()) {
-                if (col.equals("URL")) {
+                if (col.equalsIgnoreCase("URL")) {
                     video.setURL(results.get(col).get(i));
-                } else if (col.equals("title")) {
+                } else if (col.equalsIgnoreCase("title")) {
                     video.setTitle(results.get(col).get(i));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    video.setChecked(Integer.parseInt(results.get(col).get(i)));
                 }
             }
             videos.add(video);
@@ -100,17 +104,19 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
     @Override
     public List<Video> findAllWithKeyword(String s) throws SQLException {
         List<Video> videos = new ArrayList<>();
-        String keyword = "\'%" + s + "\'%";
+        String keyword = "\'%" + s.toUpperCase() + "\'%";
         Map<String, List<String>> results = database.query("SELECT * FROM Video"
-                + " WHERE url LIKE ? OR title LIKE ?", keyword, keyword);
+                + " WHERE UPPER(url) LIKE ? OR UPPER(title) LIKE ?", keyword, keyword);
 
         for (int i = 0; i < results.get("URL").size(); i++) {
             Video video = new Video();
             for (String col : results.keySet()) {
-                if (col.equals("URL")) {
+                if (col.equalsIgnoreCase("URL")) {
                     video.setURL(results.get(col).get(i));
-                } else if (col.equals("title")) {
+                } else if (col.equalsIgnoreCase("title")) {
                     video.setTitle(results.get(col).get(i));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    video.setChecked(Integer.parseInt(results.get(col).get(i)));
                 }
             }
             videos.add(video);
