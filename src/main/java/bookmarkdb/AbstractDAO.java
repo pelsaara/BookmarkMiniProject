@@ -19,4 +19,6 @@ public interface AbstractDAO<T, K> {
     boolean delete(T t) throws SQLException;
     
     List<T> findAllWithKeyword(String s) throws SQLException;
+    
+    void marksAsChecked(T t);
 }

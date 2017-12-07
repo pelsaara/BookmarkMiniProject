@@ -123,4 +123,9 @@ public class BookDAO implements AbstractDAO<Book, Integer> {
         return books;
     }
 
+    @Override
+    public void marksAsChecked(Book t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

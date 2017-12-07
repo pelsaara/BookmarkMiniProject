@@ -64,7 +64,7 @@ public class Book {
     
     @Override
     public String toString() {
-        return "Book: " + "title: " + title + ", author: " + author + ", ISBN: " + ISBN + ", " + isRead();
+        return "Book: " + "title: " + title + ", author: " + author + ", ISBN: " + ISBN + ", " + isChecked();
     }
     
     @Override
@@ -88,7 +88,7 @@ public class Book {
         return hash;
     }
 
-    private String isRead() {
+    private String isChecked() {
         if (checked == 0) {
             return "not read";
         }

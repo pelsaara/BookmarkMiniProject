@@ -126,4 +126,9 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
         }
         return podcasts;
     }
+
+    @Override
+    public void marksAsChecked(Podcast t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

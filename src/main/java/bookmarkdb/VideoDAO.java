@@ -118,4 +118,9 @@ public class VideoDAO implements AbstractDAO<Video, Integer> {
 
         return videos;
     }
+
+    @Override
+    public void marksAsChecked(Video t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
