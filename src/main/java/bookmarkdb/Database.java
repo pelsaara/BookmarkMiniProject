@@ -146,10 +146,11 @@ public class Database implements AbstractDatabase {
 
 		// SQL statements for creating tables
 		list.add(
-				"CREATE TABLE IF NOT EXISTS Book" + "(title TEXT NOT NULL," + " author TEXT NOT NULL," + " ISBN TEXT)");
+				"CREATE TABLE IF NOT EXISTS Book" + "(title TEXT NOT NULL," + " author TEXT NOT NULL,"
+                                        + " ISBN TEXT," + " checked INT NOT NULL DEFAULT 0)");
 		list.add("CREATE TABLE IF NOT EXISTS Podcast" + "(name TEXT," + " author TEXT NOT NULL,"
-				+ " title TEXT NOT NULL," + " url TEXT)");
-		list.add("CREATE TABLE IF NOT EXISTS Video" + "(URL TEXT NOT NULL," + " title TEXT)");
+				+ " title TEXT NOT NULL," + " url TEXT," + " checked INT NOT NULL DEFAULT 0)");
+		list.add("CREATE TABLE IF NOT EXISTS Video" + "(URL TEXT NOT NULL," + " title TEXT," + " checked INT NOT NULL DEFAULT 0)");
 		
 		return list;
 	}
