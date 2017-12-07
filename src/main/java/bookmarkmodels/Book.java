@@ -7,6 +7,14 @@ public class Book {
     private String title;
     private String author;
     private String ISBN;
+    private int checked;
+
+    public Book(String title, String author, String ISBN, int checked) {
+        this.title = title;
+        this.author = author;
+        this.ISBN = ISBN;
+        this.checked = checked;
+    }
 
     public Book(String title, String author, String ISBN) {
         this.title = title;
@@ -46,9 +54,17 @@ public class Book {
         this.ISBN = ISBN;
     }
 
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int checked) {
+        this.checked = checked;
+    }
+    
     @Override
     public String toString() {
-        return "Book: " + "title: " + title + ", author: " + author + ", ISBN: " + ISBN;
+        return "Book: " + "title: " + title + ", author: " + author + ", ISBN: " + ISBN + ", " + isRead();
     }
     
     @Override
@@ -70,5 +86,12 @@ public class Book {
         hash = 79 * hash + this.author.hashCode();
         hash = 79 * hash + this.ISBN.hashCode();
         return hash;
+    }
+
+    private String isRead() {
+        if (checked == 0) {
+            return "not read";
+        }
+        return "read";
     }
 }

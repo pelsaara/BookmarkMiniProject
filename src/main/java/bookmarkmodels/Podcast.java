@@ -6,6 +6,15 @@ public class Podcast {
     private String author;
     private String title;
     private String url;
+    private int checked;
+
+    public Podcast(String name, String author, String title, String url, int checked) {
+        this.name = name;
+        this.author = author;
+        this.title = title;
+        this.url = url;
+        this.checked = checked;
+    }
 
     public Podcast(String name, String author, String title, String url) {
         this.name = name;
@@ -54,9 +63,17 @@ public class Podcast {
         return url;
     }
 
+    public void setChecked(int checked) {
+        this.checked = checked;
+    }
+
+    public int getChecked() {
+        return checked;
+    }
+
     @Override
     public String toString() {
-        return "Podcast: " + "name: " + name + ", title: " + title + ", author: " + author + ", url: " + url;
+        return "Podcast: " + "name: " + name + ", title: " + title + ", author: " + author + ", url: " + url + ", " + isChecked();
     }
     
     @Override
@@ -70,5 +87,12 @@ public class Podcast {
         		&& comp.getAuthor().equals(this.author)
                 && comp.getUrl().equals(this.url)
                 && comp.getTitle().equals(this.title);
+    }
+
+    private String isChecked() {
+        if (checked == 0) {
+            return "not listened";
+        }
+        return "listened";
     }
 }

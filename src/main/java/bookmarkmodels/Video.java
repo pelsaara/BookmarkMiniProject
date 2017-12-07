@@ -10,6 +10,13 @@ package bookmarkmodels;
 public class Video {
 	private String URL;
 	private String title;
+        private int checked; 
+
+    public Video(String URL, String title, int checked) {
+        this.URL = URL;
+        this.title = title;
+        this.checked = checked;
+    }
 
     public Video(String URL, String title) {
     	this.URL = URL;
@@ -41,7 +48,7 @@ public class Video {
 
     @Override
     public String toString() {
-        return "Video: "  + "URL: " + URL + ", title: " + title;
+        return "Video: "  + "URL: " + URL + ", title: " + title + ", " + isChecked();
     }
     
     @Override
@@ -60,5 +67,12 @@ public class Video {
         hash = 79 * hash + this.URL.hashCode();
         hash = 79 * hash + this.title.hashCode();
         return hash;
+    }
+
+    private String isChecked() {
+        if (checked == 0) {
+            return "not watched";
+        }
+        return "watched";
     }
 }
