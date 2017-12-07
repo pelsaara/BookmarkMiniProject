@@ -26,9 +26,9 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
         
         List<Podcast> allPodcasts = this.findAll();
         for (Podcast existingPod : allPodcasts) {
-            if (podcast.getAuthor().equals(existingPod.getAuthor())
-                    && podcast.getName().equals(existingPod.getName())
-                    && podcast.getTitle().equals(existingPod.getTitle())) {
+            if (podcast.getAuthor().equalsIgnoreCase(existingPod.getAuthor())
+                    && podcast.getName().equalsIgnoreCase(existingPod.getName())
+                    && podcast.getTitle().equalsIgnoreCase(existingPod.getTitle())) {
                 return null;
             }
         }
@@ -44,17 +44,19 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
         if (results.get("title").size() > 0) {
             Podcast found = new Podcast();
             for (String col : results.keySet()) {
-                if (col.equals("name")) {
+                if (col.equalsIgnoreCase("name")) {
                     found.setName(results.get(col).get(0));
                 }
-                if (col.equals("author")) {
+                if (col.equalsIgnoreCase("author")) {
                     found.setAuthor(results.get(col).get(0));
                 }
-                if (col.equals("title")) {
+                if (col.equalsIgnoreCase("title")) {
                     found.setTitle(results.get(col).get(0));
                 }
-                if (col.equals("url")) {
+                if (col.equalsIgnoreCase("url")) {
                     found.setUrl(results.get(col).get(0));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    found.setChecked(Integer.parseInt(results.get(col).get(0)));
                 }
             }
             return found;
@@ -70,14 +72,16 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
         for (int i = 0; i < results.get("title").size(); i++) {
             Podcast podcast = new Podcast();
             for (String col : results.keySet()) {
-                if (col.equals("name")) {
+                if (col.equalsIgnoreCase("name")) {
                     podcast.setName(results.get(col).get(i));
-                } else if (col.equals("author")) {
+                } else if (col.equalsIgnoreCase("author")) {
                     podcast.setAuthor(results.get(col).get(i));
-                } else if (col.equals("title")) {
+                } else if (col.equalsIgnoreCase("title")) {
                     podcast.setTitle(results.get(col).get(i));
-                } else if (col.equals("url")) {
+                } else if (col.equalsIgnoreCase("url")) {
                     podcast.setUrl(results.get(col).get(i));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    podcast.setChecked(Integer.parseInt(results.get(col).get(i)));
                 }
             }
             podcasts.add(podcast);
@@ -104,22 +108,25 @@ public class PodcastDAO implements AbstractDAO<Podcast, Integer>{
     @Override
     public List<Podcast> findAllWithKeyword(String s) throws SQLException {
         List<Podcast> podcasts = new ArrayList<>();
-        String keyword = "\'%" + s + "\'%";
+        String keyword = "\'%" + s.toUpperCase() + "\'%";
         Map<String, List<String>> results = database.query("SELECT * FROM Podcast"
-                + " WHERE author LIKE ? OR title LIKE ? OR name LIKE ? OR url LIKE ?"
+                + " WHERE UPPER(author) LIKE ? OR UPPER(title) LIKE ? OR"
+                + " UPPER(name) LIKE ? OR UPPER(url) LIKE ?"
                 , keyword, keyword, keyword, keyword);
         
         for (int i = 0; i < results.get("title").size(); i++) {
             Podcast podcast = new Podcast();
             for (String col : results.keySet()) {
-                if (col.equals("name")) {
+                if (col.equalsIgnoreCase("name")) {
                     podcast.setName(results.get(col).get(i));
-                } else if (col.equals("author")) {
+                } else if (col.equalsIgnoreCase("author")) {
                     podcast.setAuthor(results.get(col).get(i));
-                } else if (col.equals("title")) {
+                } else if (col.equalsIgnoreCase("title")) {
                     podcast.setTitle(results.get(col).get(i));
-                } else if (col.equals("url")) {
+                } else if (col.equalsIgnoreCase("url")) {
                     podcast.setUrl(results.get(col).get(i));
+                } else if (col.equalsIgnoreCase("checked")) {
+                    podcast.setChecked(Integer.parseInt(results.get(col).get(i)));
                 }
             }
             podcasts.add(podcast);

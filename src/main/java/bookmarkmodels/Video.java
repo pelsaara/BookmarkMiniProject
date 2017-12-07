@@ -46,6 +46,14 @@ public class Video {
         this.URL = URL;
     }
 
+    public int getChecked() {
+        return checked;
+    }
+
+    public void setChecked(int newChecked) {
+        this.checked = newChecked;
+    }
+
     @Override
     public String toString() {
         return "Video: "  + "URL: " + URL + ", title: " + title + ", " + isChecked();
