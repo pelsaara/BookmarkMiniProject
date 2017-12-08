@@ -51,13 +51,16 @@ public class UI implements Runnable {
             		+ "To add a book type \"add book\".\n"
                         + "To edit a book type \"edit book\".\n"
             		+ "To delete a book type \"delete book\".\n"
+                        + "To mark book as read \"mark read\".\n"
             		+ "To add a podcast type \"add podcast\".\n"
                         + "To edit a podcast type \"edit podcast\".\n"
             		+ "To delete a podcast type \"delete podcast\".\n"
+                        + "To mark podcast as listened \"mark listened\".\n"
                         + "To add a video type \"add video\".\n"
                         + "To edit a video type \"edit video\".\n"
             		+ "To delete a video type \"delete video\".\n"
                         + "To open a video type \"open video\".\n"
+                        + "To mark video as watched \"mark watched\".\n"
             		+ "To quit the program type \"quit\".\n\n"
             		+ "What to do?\n");
 
@@ -76,10 +79,14 @@ public class UI implements Runnable {
                 	commandDeleteBook();
                 } else if (command.equals("add podcast")) {
                 	commandAddPodcast();
+                } else if (command.equals("mark read")) {
+                        commandMarkAsRead();
                 } else if (command.equals("edit podcast")) {
                 	commandEditPodcast();
                 } else if (command.equals("delete podcast")) {
                 	commandDeletePodcast();
+                } else if (command.equals("mark listened")) {
+                        commandMarkAsListened();
                 } else if (command.equals("add video")) {
                 	commandAddVideo();
                 } else if (command.equals("edit video")) {
@@ -88,6 +95,8 @@ public class UI implements Runnable {
                 	commandDeleteVideo();
                 } else if (command.equals("open video")) {
                         commandOpenVideoURL();
+                } else if (command.equals("mark watched")) {
+                        commandMarkAsWatched();
                 }
             } catch (IOException ex) {
                 Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,12 +220,20 @@ public class UI implements Runnable {
     }
 
     private void commandDeleteBook() throws IOException {
-        System.out.println("Title:");
-        String title = br.readLine();
-        System.out.println("Author:");
-        String author = br.readLine();
+        List<Book> books = browseBooks();
+        System.out.println("\nWhich book do you want to delete?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(books.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Book toDelete = books.get(index - 1);
+        
+        
         try {
-            if (bookDAO.delete(new Book(title, author))) {
+            if (bookDAO.delete(toDelete)) {
                 System.out.println("\nBook deleted!");
             } else {
                 System.out.println("\nNon-existent book cannot be deleted");
@@ -307,16 +324,20 @@ public class UI implements Runnable {
     }
     
     private void commandDeletePodcast() throws IOException {
-        System.out.println("Name:");
-        String name = br.readLine();
-        System.out.println("Author:");
-        String author = br.readLine();
-        System.out.println("Title:");
-        String title = br.readLine();
-        Podcast deletable = new Podcast(name, author, title);
-        deletable.setName(name);
+        List<Podcast> podcasts = browsePodcasts();
+        System.out.println("\nWhich podcast do you want to delete?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(podcasts.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Podcast toDelete = podcasts.get(index - 1);
+        
+        
         try {
-            if (podcastDAO.delete(deletable)) {
+            if (podcastDAO.delete(toDelete)) {
                 System.out.println("\nPodcast deleted!");
             } else {
                 System.out.println("\nNon-existent podcast cannot be deleted");
@@ -455,5 +476,47 @@ public class UI implements Runnable {
         } catch (SQLException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void commandMarkAsRead() throws IOException{
+        List<Book> books = browseBooks();
+        System.out.println("\nWhich book do you want to mark as read?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(books.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Book toMark = books.get(index - 1);
+        bookDAO.marksAsChecked(toMark);
+    }
+
+    private void commandMarkAsWatched() throws IOException{
+        List<Video> videos = browseVideos();
+        System.out.println("\nWhich video do you want to mark as watched?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(videos.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Video toMark = videos.get(index - 1);
+        videoDAO.marksAsChecked(toMark);
+    }
+
+    private void commandMarkAsListened() throws IOException{
+        List<Podcast> podcasts = browsePodcasts();
+        System.out.println("\nWhich podcast do you want to mark as listened?"
+                + "\nPlease enter a row number or \"cancel\" to return to main menu: ");
+        int index = getRowNumber(podcasts.size());
+
+        if (index == -1) {
+            return;
+        }
+
+        Podcast toMark = podcasts.get(index - 1);
+        podcastDAO.marksAsChecked(toMark);
     }
 }
